@@ -1,8 +1,11 @@
+#include "Timer.hpp"
 #include <iostream>
-#include <string_view>
 
 int main()
 {
-    std::cout << "Hello World" << std::endl;
+    pomodoro::Timer t;
+    std::cout << "Hello..." ;
+    t.setTimeoutIn(10000);
+    std::cout << "World !" << std::endl;
     return 0;
 }
