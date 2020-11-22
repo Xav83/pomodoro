@@ -5,12 +5,12 @@ namespace pomodoro
 class Timer
 {
 public:
-    Timer();
+    Timer(int delayInMs);
     ~Timer();
 
-    void setTimeoutIn(int delayInMs);
+    void start();
 
 private:
-
+    int delayInMs{0};
 };
 }
