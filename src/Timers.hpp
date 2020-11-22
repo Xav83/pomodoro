@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Timer.hpp"
+#include <string_view>
 #include <vector>
 
 namespace pomodoro
@@ -11,7 +12,7 @@ public:
     Timers();
     ~Timers();
 
-    void emplaceTimer(int delayInMs);
+    void emplaceTimer(std::string_view name, int delayInMs);
 
     Timer& getTimer(size_t index);
 

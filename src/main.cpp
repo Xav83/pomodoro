@@ -6,15 +6,11 @@
 int main()
 {
     pomodoro::Timers t;
-    t.emplaceTimer(10000);
-    t.emplaceTimer(1000);
-
-    std::cout << "Hello..." ;
+    t.emplaceTimer("Work", 10000);
+    t.emplaceTimer("Break", 1000);
 
     t.getTimer(0).start();
     t.getTimer(1).start();
-
-    std::cout << "World !" << std::endl;
 
     while(t.hasOneTimerRunning());
     return 0;
