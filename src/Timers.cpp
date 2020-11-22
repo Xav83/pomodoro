@@ -8,9 +8,9 @@ using pomodoro::Timer;
 Timers::Timers() = default;
 Timers::~Timers() = default;
 
-void Timers::emplaceTimer(std::string_view name, std::chrono::milliseconds delayInMs)
+void Timers::emplaceTimer(std::string_view name, std::chrono::milliseconds delayInMs, std::function<void()> callback)
 {
-    timers.emplace_back(name, delayInMs);
+    timers.emplace_back(name, delayInMs, callback);
 }
 
 Timer& Timers::getTimer(size_t index)

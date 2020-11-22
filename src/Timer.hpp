@@ -1,6 +1,7 @@
 #pragma once
 
 #include <chrono>
+#include <functional>
 #include <string_view>
 
 namespace pomodoro
@@ -8,7 +9,7 @@ namespace pomodoro
 class Timer
 {
 public:
-    Timer(std::string_view name, std::chrono::milliseconds delayInMs);
+    Timer(std::string_view name, std::chrono::milliseconds delayInMs, std::function<void()> callback_ = [](){});
     ~Timer();
 
     void start();
@@ -21,7 +22,8 @@ public:
 private:
     std::string_view name;
     std::chrono::milliseconds delayInMs{0};
-    bool isCurrentlyRunning{false}, hasRun{false};
+    std::function<void()> callback;
+    bool isCurrentlyRunning{false};
     std::chrono::time_point<std::chrono::high_resolution_clock> timeAtStart;
 };
 }

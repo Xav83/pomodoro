@@ -6,7 +6,7 @@
 
 using pomodoro::Timer;
 
-Timer::Timer(std::string_view name_, std::chrono::milliseconds delayInMs_) : name(name_), delayInMs(delayInMs_) { }
+Timer::Timer(std::string_view name_, std::chrono::milliseconds delayInMs_, std::function<void()> callback_) : name(name_), delayInMs(delayInMs_), callback(std::move(callback_)) { }
 
 Timer::~Timer() = default;
 
@@ -18,7 +18,7 @@ void Timer::start()
     std::thread t([this]() {
         std::this_thread::sleep_for(std::chrono::milliseconds(delayInMs));
         isCurrentlyRunning = false;
-        hasRun = true;
+        callback();
         std::cout << "End of the timer " << name << std::endl;
     });
     t.detach();

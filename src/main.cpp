@@ -6,11 +6,10 @@
 int main()
 {
     pomodoro::Timers timers;
-    timers.emplaceTimer("Work", std::chrono::milliseconds(10000));
-    timers.emplaceTimer("Break", std::chrono::milliseconds(1000));
+    timers.emplaceTimer("Work", std::chrono::minutes(25), [&timers](){ timers.getTimer(1).start(); });
+    timers.emplaceTimer("Break", std::chrono::minutes(5), [&timers](){ timers.getTimer(0).start(); });
 
     timers.getTimer(0).start();
-    timers.getTimer(1).start();
 
     while(timers.hasOneTimerRunning())
     {
