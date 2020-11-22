@@ -15,6 +15,8 @@ public:
 
     Timer& getTimer(size_t index);
 
+    bool hasOneTimerRunning() const;
+
 private:
     std::vector<Timer> timers;
 };

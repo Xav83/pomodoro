@@ -10,7 +10,10 @@ public:
 
     void start();
 
+    bool isRunning() const;
+
 private:
     int delayInMs{0};
+    bool isCurrentlyRunning{false}, hasRun{false};
 };
 }

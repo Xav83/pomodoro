@@ -16,6 +16,6 @@ int main()
 
     std::cout << "World !" << std::endl;
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(10001));
+    while(t.hasOneTimerRunning());
     return 0;
 }
