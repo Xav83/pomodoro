@@ -5,13 +5,23 @@
 
 int main()
 {
-    pomodoro::Timers t;
-    t.emplaceTimer("Work", 10000);
-    t.emplaceTimer("Break", 1000);
+    pomodoro::Timers timers;
+    timers.emplaceTimer("Work", std::chrono::milliseconds(10000));
+    timers.emplaceTimer("Break", std::chrono::milliseconds(1000));
 
-    t.getTimer(0).start();
-    t.getTimer(1).start();
+    timers.getTimer(0).start();
+    timers.getTimer(1).start();
 
-    while(t.hasOneTimerRunning());
+    while(timers.hasOneTimerRunning())
+    {
+        for(const auto& t : timers.getTimers())
+        {
+            if(t.isRunning())
+            {
+                std::cout << "Timer \"" << t.getName() << "\" - time remaining: " << t.getRemainingTime().count() << " s" << std::endl;
+            }
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    }
     return 0;
 }
