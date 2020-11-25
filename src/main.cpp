@@ -24,6 +24,7 @@ int main()
         {
             start_break_sound.stop();
             start_break_sound.play();
+            fmt::print("\n");
             timers.getTimer(1).start();
         });
     timers.emplaceTimer("Break", std::chrono::minutes(5),
@@ -31,6 +32,7 @@ int main()
         {
             start_work_sound.stop();
             start_work_sound.play();
+            fmt::print("\n");
             timers.getTimer(0).start();
         });
 
@@ -42,7 +44,7 @@ int main()
         {
             if(t.isRunning())
             {
-                fmt::print("Timer \"{}\" - Time remaining: {:%M:%S}\n", t.getName(), t.getRemainingTime());
+                fmt::print("\rTimer \"{}\" - Time remaining: {:%M:%S}", t.getName(), t.getRemainingTime());
             }
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));

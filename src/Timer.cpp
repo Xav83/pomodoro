@@ -1,7 +1,6 @@
 #include "Timer.hpp"
 #include <cassert>
 #include <chrono>
-#include <iostream>
 #include <thread>
 
 using pomodoro::Timer;
@@ -12,14 +11,12 @@ Timer::~Timer() = default;
 
 void Timer::start()
 {
-    std::cout << "Starting the timer " << name << std::endl;
     isCurrentlyRunning = true;
     timeAtStart = std::chrono::high_resolution_clock::now();
     std::thread t([this]() {
         std::this_thread::sleep_for(std::chrono::milliseconds(delayInMs));
         isCurrentlyRunning = false;
         callback();
-        std::cout << "End of the timer " << name << std::endl;
     });
     t.detach();
 }
