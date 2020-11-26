@@ -17,7 +17,7 @@ execute_process(
 include(${PROJECT_SOURCE_DIR}/build/conanbuildinfo_multi.cmake)
 conan_basic_setup(TARGETS)
 
-add_executable(pomodoro src/main.cpp src/Timers.cpp src/Timer.cpp)
+add_executable(pomodoro src/main.cpp src/Timers.cpp src/Pomodoro.cpp src/Timer.cpp)
 set_property(TARGET pomodoro PROPERTY CXX_STANDARD 17)
 target_link_libraries(pomodoro PUBLIC CONAN_PKG::fmt CONAN_PKG::sfml)
 

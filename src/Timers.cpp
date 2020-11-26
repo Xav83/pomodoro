@@ -19,7 +19,7 @@ Timer& Timers::getTimer(size_t index)
     return timers[index];
 }
 
-std::vector<Timer>& Timers::getTimers()
+const std::vector<Timer>& Timers::getTimers() const
 {
     return timers;
 }

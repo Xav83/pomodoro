@@ -15,7 +15,7 @@ public:
     void emplaceTimer(std::string_view name, std::chrono::milliseconds delayInMs, std::function<void()> callback = [](){});
 
     Timer& getTimer(size_t index);
-    std::vector<Timer>& getTimers();
+    const std::vector<Timer>& getTimers() const;
 
     bool hasOneTimerRunning() const;
 
