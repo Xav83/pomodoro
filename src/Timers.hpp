@@ -15,7 +15,9 @@ public:
     void emplaceTimer(std::string_view name, std::chrono::milliseconds delayInMs, std::function<void()> callback = [](){});
 
     Timer& getTimer(size_t index);
-    const std::vector<Timer>& getTimers() const;
+
+    std::vector<pomodoro::Timer>::const_iterator cbegin() const;
+    std::vector<pomodoro::Timer>::const_iterator cend() const;
 
     bool hasOneTimerRunning() const;
 

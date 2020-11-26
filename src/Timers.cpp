@@ -19,9 +19,14 @@ Timer& Timers::getTimer(size_t index)
     return timers[index];
 }
 
-const std::vector<Timer>& Timers::getTimers() const
+std::vector<pomodoro::Timer>::const_iterator Timers::cbegin() const
 {
-    return timers;
+    return std::cbegin(timers);
+}
+
+std::vector<pomodoro::Timer>::const_iterator Timers::cend() const
+{
+    return std::cend(timers);
 }
 
 bool Timers::hasOneTimerRunning() const

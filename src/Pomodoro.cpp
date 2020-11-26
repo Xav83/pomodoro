@@ -41,9 +41,8 @@ std::string Pomodoro::getCurrentState() const
     {
         return "The Pomodoro has not been started.";
     }
-    const auto& rawTimers = timers.getTimers();
-    const auto it = std::find_if(std::begin(rawTimers), std::end(rawTimers), [](const auto& timer){ return timer.isRunning(); });
-    assert(it != std::end(rawTimers));
+    const auto it = std::find_if(timers.cbegin(), timers.cend(), [](const auto& timer){ return timer.isRunning(); });
+    assert(it != timers.cend());
 
     return fmt::format("Timer \"{}\" - Time remaining: {:%M:%S}", it->getName().data(), it->getRemainingTime());
 }
