@@ -1,6 +1,7 @@
 #include "Pomodoro.hpp"
 #include <fmt/core.h>
 #include <fmt/chrono.h>
+#include <fmt/color.h>
 #include <cassert>
 #include <filesystem>
 
@@ -37,12 +38,21 @@ bool Pomodoro::isRunning() const
 
 std::string Pomodoro::getCurrentState() const
 {
-    if(! isRunning())
+    if(!isRunning())
     {
         return "The Pomodoro has not been started.";
     }
     const auto it = std::find_if(timers.cbegin(), timers.cend(), [](const auto& timer){ return timer.isRunning(); });
     assert(it != timers.cend());
 
-    return fmt::format("Timer \"{}\" - Time remaining: {:%M:%S}", it->getName().data(), it->getRemainingTime());
+    const auto name = [&it]()
+    {
+        if(it->getName() == "Work")
+        {
+            return fmt::format(fg(fmt::terminal_color::cyan) | fmt::emphasis::bold, "{}", it->getName().data(), it->getRemainingTime());
+        }
+        return fmt::format(fg(fmt::terminal_color::green) | fmt::emphasis::bold, "{}", it->getName().data(), it->getRemainingTime());
+    }();
+
+    return fmt::format("Timer {} - Time remaining: {:%M:%S}", name, it->getRemainingTime());
 }
