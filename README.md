@@ -7,7 +7,7 @@ For now, the focus is on making a simple terminal application.
 
 - [X] Aternate automatically between "Work" and "Break" periods.
 - [X] Emit a sound at the end/start of a new period.
-- [ ] Implements a pomodoro class with the same behavior as the one described on [Wikipedia](https://en.wikipedia.org/wiki/Pomodoro_Technique)
+- [X] Implements a pomodoro class with the same behavior as the one described on [Wikipedia](https://en.wikipedia.org/wiki/Pomodoro_Technique)
 - [X] Make one period update the same line on the terminal to avoid flooding it.
 
 ## Compilation
