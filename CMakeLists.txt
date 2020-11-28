@@ -5,16 +5,20 @@ project(Project)
 find_program(
   CONAN_EXE
   NAMES conan conan.exe
+  HINTS "C:/Program Files/Conan/conan/"
   DOC "Conan executable" REQUIRED)
 
 execute_process(
+    COMMAND ${CONAN_EXE} remote add url "https://api.bintray.com/conan/bincrafters/public-conan"
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+execute_process(
     COMMAND ${CONAN_EXE} install . --install-folder=build --build=missing -pr=.conan/profiles/windows -s build_type=Debug
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
-  execute_process(
+execute_process(
     COMMAND ${CONAN_EXE} install . --install-folder=build --build=missing -pr=.conan/profiles/windows -s build_type=Release
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 
-include(${PROJECT_SOURCE_DIR}/build/conanbuildinfo_multi.cmake)
+include(${PROJECT_BINARY_DIR}/conanbuildinfo_multi.cmake)
 conan_basic_setup(TARGETS)
 
 add_executable(pomodoro src/main.cpp src/Timers.cpp src/Pomodoro.cpp src/Timer.cpp)

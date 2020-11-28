@@ -1,0 +1,22 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-2019'
+
+steps:
+- script: |
+    choco install conan
+    refreshenv
+  displayName: 'Installs Dependencies'
+- script: |
+    mkdir -p build
+    cd build
+    cmake ..
+    cmake --build . --config Debug
+  displayName: 'Compiles in Debug Configuration'
+- script: |
+    cd build
+    cmake ..
+    cmake --build . --config Release
+  displayName: 'Compiles in Release Configuration'
