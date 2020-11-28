@@ -1,10 +1,5 @@
 #include "Pomodoro.hpp"
-#include <SFML/Audio.hpp>
-#include <fmt/chrono.h>
-#include <cassert>
-#include <chrono>
-#include <filesystem>
-#include <iostream>
+#include <fmt/core.h>
 #include <thread>
 
 int main()
