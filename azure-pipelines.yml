@@ -4,19 +4,44 @@ trigger:
 pool:
   vmImage: 'windows-2019'
 
-steps:
-- script: |
-    choco install conan
-    refreshenv
-  displayName: 'Installs Dependencies'
-- script: |
-    mkdir -p build
-    cd build
-    cmake ..
-    cmake --build . --config Debug
-  displayName: 'Compiles in Debug Configuration'
-- script: |
-    cd build
-    cmake ..
-    cmake --build . --config Release
-  displayName: 'Compiles in Release Configuration'
+jobs:
+  - job: Pomodoro
+    strategy:
+      matrix:
+        mac_debug:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Debug'
+        mac_release:
+          imageName: 'macOS-10.15'
+          generator: Xcode
+          build_configuration: 'Release'
+        windows_debug:
+          imageName: 'windows-2019'
+          generator: Visual Studio 16 2019
+          build_configuration: 'Debug'
+        windows_release:
+          imageName: 'windows-2019'
+          generator: Visual Studio 16 2019
+          build_configuration: 'Release'
+    pool:
+        vmImage: $(imageName)
+    steps:
+    - script: |
+        choco install conan
+        refreshenv
+      displayName: 'Installs Dependencies'
+      condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Windows_NT'))
+    - script: |
+        pip3 install conan
+      displayName: 'Installs Dependencies'
+      condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Darwin'))
+    - script: |
+        mkdir -p build
+        cd build
+        cmake .. -G "$(generator)"
+      displayName: 'Generates the Solution'
+    - script: |
+        cd build
+        cmake --build . --config $(build_configuration)
+      displayName: 'Compiles the solution in $(build_configuration) Configuration'

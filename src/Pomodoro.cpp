@@ -1,4 +1,5 @@
 #include "Pomodoro.hpp"
+#include "Resources.hpp"
 #include <fmt/core.h>
 #include <fmt/chrono.h>
 #include <fmt/color.h>
@@ -7,12 +8,10 @@
 
 Pomodoro::Pomodoro()
 {
-    std::filesystem::path start_break_sound_file("C:/ProgramData/pomodoro/PowerDown1.ogg");
-    std::filesystem::path start_work_sound_file("C:/ProgramData/pomodoro/PowerUp1.ogg");
-    assert(std::filesystem::exists(start_break_sound_file));
-    assert(std::filesystem::exists(start_work_sound_file));
-    start_break_sound.openFromFile(start_break_sound_file.string());
-    start_work_sound.openFromFile(start_work_sound_file.string());
+    assert(std::filesystem::exists(pomodoro::start_break_sound_file));
+    assert(std::filesystem::exists(pomodoro::start_work_sound_file));
+    start_break_sound.openFromFile(pomodoro::start_break_sound_file.string());
+    start_work_sound.openFromFile(pomodoro::start_work_sound_file.string());
 
     timers.emplaceTimer("Work", std::chrono::minutes(25), [this](){ start_break_sound.stop(); start_break_sound.play(); fmt::print("\n"); timers.getTimer(1).start(); });
     timers.emplaceTimer("Break", std::chrono::minutes(5), [this](){ start_break_sound.stop(); start_break_sound.play(); fmt::print("\n"); timers.getTimer(2).start(); });

@@ -8,26 +8,35 @@ find_program(
   HINTS "C:/Program Files/Conan/conan/"
   DOC "Conan executable" REQUIRED)
 
+if(APPLE)
+  set(POMODORO_PROFILE ${PROJECT_SOURCE_DIR}/.conan/profiles/apple)
+  set(POMODORO_SOUND_INSTALL_FOLDER "~/Library/Application Support/Pomodoro")
+else()
+  set(POMODORO_PROFILE ${PROJECT_SOURCE_DIR}/.conan/profiles/windows)
+  set(POMODORO_SOUND_INSTALL_FOLDER "C:/ProgramData/pomodoro")
+endif()
+
 execute_process(
     COMMAND ${CONAN_EXE} remote add url "https://api.bintray.com/conan/bincrafters/public-conan"
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 execute_process(
-    COMMAND ${CONAN_EXE} install . --install-folder=build --build=missing -pr=.conan/profiles/windows -s build_type=Debug
+    COMMAND ${CONAN_EXE} install . --install-folder=build --build=missing -pr=${POMODORO_PROFILE} -s build_type=Debug
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 execute_process(
-    COMMAND ${CONAN_EXE} install . --install-folder=build --build=missing -pr=.conan/profiles/windows -s build_type=Release
+    COMMAND ${CONAN_EXE} install . --install-folder=build --build=missing -pr=${POMODORO_PROFILE} -s build_type=Release
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 
 include(${PROJECT_BINARY_DIR}/conanbuildinfo_multi.cmake)
 conan_basic_setup(TARGETS)
 
 add_executable(pomodoro src/main.cpp src/Timers.cpp src/Pomodoro.cpp src/Timer.cpp)
+target_compile_definitions(pomodoro PRIVATE WITH_AUDIO)
 set_property(TARGET pomodoro PROPERTY CXX_STANDARD 17)
 target_link_libraries(pomodoro PUBLIC CONAN_PKG::fmt CONAN_PKG::sfml)
 
-make_directory("C:/ProgramData/pomodoro")
+make_directory("${POMODORO_SOUND_INSTALL_FOLDER}")
 
 add_custom_command(TARGET pomodoro POST_BUILD
-                    COMMAND cp * "C:/ProgramData/pomodoro"
-                    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/res/
+                   COMMAND cp *.ogg ${POMODORO_SOUND_INSTALL_FOLDER}
+                   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/res/
                    COMMENT "Moves the sound files into the right folder")
