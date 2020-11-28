@@ -49,10 +49,20 @@ std::string Pomodoro::getCurrentState() const
     {
         if(it->getName() == "Work")
         {
-            return fmt::format(fg(fmt::terminal_color::cyan) | fmt::emphasis::bold, "{}", it->getName().data(), it->getRemainingTime());
+            return fmt::format(fg(fmt::color::cadet_blue) | fmt::emphasis::bold, "{}", it->getName().data(), it->getRemainingTime());
         }
-        return fmt::format(fg(fmt::terminal_color::green) | fmt::emphasis::bold, "{}", it->getName().data(), it->getRemainingTime());
+        return fmt::format(fg(fmt::color::golden_rod) | fmt::emphasis::bold, "{}", it->getName().data(), it->getRemainingTime());
     }();
+
+    // Other set of nice colors
+    // const auto name = [&it]()
+    // {
+    //     if(it->getName() == "Work")
+    //     {
+    //         return fmt::format(fg(fmt::color::light_coral) | fmt::emphasis::bold, "{}", it->getName().data(), it->getRemainingTime());
+    //     }
+    //     return fmt::format(fg(fmt::color::light_blue) | fmt::emphasis::bold, "{}", it->getName().data(), it->getRemainingTime());
+    // }();
 
     return fmt::format("Timer {} - Time remaining: {:%M:%S}", name, it->getRemainingTime());
 }
