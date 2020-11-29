@@ -8,6 +8,14 @@ jobs:
   - job: Pomodoro
     strategy:
       matrix:
+        ubuntu_debug:
+          imageName: 'ubuntu-18.04'
+          generator: Unix Makefiles
+          build_configuration: 'Debug'
+        ubuntu_release:
+          imageName: 'ubuntu-18.04'
+          generator: Unix Makefiles
+          build_configuration: 'Release'
         mac_debug:
           imageName: 'macOS-10.15'
           generator: Xcode
@@ -37,9 +45,19 @@ jobs:
       displayName: 'Installs Dependencies'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Darwin'))
     - script: |
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 1
+        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 1
+        sudo update-alternatives --set gcc "/usr/bin/gcc-10"
+        sudo update-alternatives --set g++ "/usr/bin/g++-10"
+        pip3 install pip --upgrade
+        pip3 install setuptools
+        pip3 install conan
+      displayName: 'Installs Dependencies'
+      condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
+    - script: |
         mkdir -p build
         cd build
-        cmake .. -G "$(generator)"
+        cmake .. -G "$(generator)" -DCMAKE_BUILD_TYPE=$(build_configuration)
       displayName: 'Generates the Solution'
     - script: |
         cd build
