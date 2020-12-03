@@ -5,6 +5,17 @@ pool:
   vmImage: 'windows-2019'
 
 jobs:
+  - job: Formatting
+    steps:
+    - script: |
+        npm install -g clang-format
+      displayName: 'Installs clang-format'
+    - script: |
+        make format
+      displayName: 'Runs the formatting command'
+    - script: |
+        git diff --exit-code
+      displayName: 'Verify that all the sources have already been formatted'
   - job: Pomodoro
     strategy:
       matrix:
