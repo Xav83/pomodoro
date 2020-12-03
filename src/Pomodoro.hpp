@@ -3,19 +3,18 @@
 #include "Timers.hpp"
 #include <SFML/Audio.hpp>
 
-class Pomodoro
-{
+class Pomodoro {
 public:
-    Pomodoro();
-    ~Pomodoro();
+  Pomodoro();
+  ~Pomodoro();
 
-    void run();
+  void run();
 
-    bool isRunning() const;
+  bool isRunning() const;
 
-    std::string getCurrentState() const;
+  std::string getCurrentState() const;
 
 private:
-    pomodoro::Timers timers;
-    sf::Music start_break_sound, start_work_sound;
+  pomodoro::Timers timers;
+  sf::Music start_break_sound, start_work_sound;
 };
