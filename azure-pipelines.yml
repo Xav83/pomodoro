@@ -8,8 +8,9 @@ jobs:
   - job: Formatting
     steps:
     - script: |
+        pip install cmake-format
         npm install -g clang-format
-      displayName: 'Installs clang-format'
+      displayName: 'Installs Dependencies'
     - script: |
         make format
       displayName: 'Runs the formatting command'
