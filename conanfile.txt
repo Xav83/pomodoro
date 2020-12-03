@@ -1,6 +1,7 @@
 [requires]
 fmt/7.1.2
 sfml/2.5.0@bincrafters/stable
+argh/1.2.1@adishavit/stable
 
 [generators]
 cmake_multi

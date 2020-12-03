@@ -39,7 +39,8 @@ conan_basic_setup(TARGETS)
 add_executable(pomodoro src/main.cpp src/Timers.cpp src/Pomodoro.cpp
                         src/Timer.cpp)
 set_property(TARGET pomodoro PROPERTY CXX_STANDARD 17)
-target_link_libraries(pomodoro PUBLIC CONAN_PKG::fmt CONAN_PKG::sfml)
+target_link_libraries(pomodoro PUBLIC CONAN_PKG::argh CONAN_PKG::fmt
+                                      CONAN_PKG::sfml)
 
 make_directory("${POMODORO_SOUND_INSTALL_FOLDER}")
 

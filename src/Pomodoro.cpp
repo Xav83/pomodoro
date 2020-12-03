@@ -3,10 +3,9 @@
 #include <cassert>
 #include <filesystem>
 #include <fmt/chrono.h>
-#include <fmt/color.h>
 #include <fmt/core.h>
 
-Pomodoro::Pomodoro() {
+Pomodoro::Pomodoro(pomodoro::ColorSet colors_) : colors(colors_) {
   assert(std::filesystem::exists(pomodoro::start_break_sound_file));
   assert(std::filesystem::exists(pomodoro::start_work_sound_file));
   start_break_sound.openFromFile(pomodoro::start_break_sound_file.string());
@@ -77,27 +76,14 @@ std::string Pomodoro::getCurrentState() const {
                    [](const auto &timer) { return timer.isRunning(); });
   assert(it != timers.cend());
 
-  const auto name = [&it]() {
+  const auto name = [&it, this]() {
     if (it->getName() == "Work") {
-      return fmt::format(fg(fmt::color::cadet_blue) | fmt::emphasis::bold, "{}",
+      return fmt::format(fg(colors.work_color) | fmt::emphasis::bold, "{}",
                          it->getName().data(), it->getRemainingTime());
     }
-    return fmt::format(fg(fmt::color::golden_rod) | fmt::emphasis::bold, "{}",
+    return fmt::format(fg(colors.break_color) | fmt::emphasis::bold, "{}",
                        it->getName().data(), it->getRemainingTime());
   }();
-
-  // Other set of nice colors
-  // const auto name = [&it]()
-  // {
-  //     if(it->getName() == "Work")
-  //     {
-  //         return fmt::format(fg(fmt::color::light_coral) |
-  //         fmt::emphasis::bold, "{}", it->getName().data(),
-  //         it->getRemainingTime());
-  //     }
-  //     return fmt::format(fg(fmt::color::light_blue) | fmt::emphasis::bold,
-  //     "{}", it->getName().data(), it->getRemainingTime());
-  // }();
 
   return fmt::format("Timer {} - Time remaining: {:%M:%S}", name,
                      it->getRemainingTime());
