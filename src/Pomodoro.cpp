@@ -5,55 +5,62 @@
 #include <fmt/chrono.h>
 #include <fmt/core.h>
 
-Pomodoro::Pomodoro(pomodoro::ColorSet colors_) : colors(colors_) {
+Pomodoro::Pomodoro(pomodoro::ColorSet colors_)
+    : Pomodoro(colors_, std::chrono::minutes(25), std::chrono::minutes(5),
+               std::chrono::minutes(15)) {}
+
+Pomodoro::Pomodoro(pomodoro::ColorSet colors_, std::chrono::minutes work_time,
+                   std::chrono::minutes break_time,
+                   std::chrono::minutes long_break_time)
+    : colors(colors_) {
   assert(std::filesystem::exists(pomodoro::start_break_sound_file));
   assert(std::filesystem::exists(pomodoro::start_work_sound_file));
   start_break_sound.openFromFile(pomodoro::start_break_sound_file.string());
   start_work_sound.openFromFile(pomodoro::start_work_sound_file.string());
 
-  timers.emplaceTimer("Work", std::chrono::minutes(25), [this]() {
+  timers.emplaceTimer("Work", work_time, [this]() {
     start_break_sound.stop();
     start_break_sound.play();
     fmt::print("\n");
     timers.getTimer(1).start();
   });
-  timers.emplaceTimer("Break", std::chrono::minutes(5), [this]() {
+  timers.emplaceTimer("Break", break_time, [this]() {
     start_break_sound.stop();
     start_break_sound.play();
     fmt::print("\n");
     timers.getTimer(2).start();
   });
-  timers.emplaceTimer("Work", std::chrono::minutes(25), [this]() {
+  timers.emplaceTimer("Work", work_time, [this]() {
     start_break_sound.stop();
     start_break_sound.play();
     fmt::print("\n");
     timers.getTimer(3).start();
   });
-  timers.emplaceTimer("Break", std::chrono::minutes(5), [this]() {
+  timers.emplaceTimer("Break", break_time, [this]() {
     start_break_sound.stop();
     start_break_sound.play();
     fmt::print("\n");
     timers.getTimer(4).start();
   });
-  timers.emplaceTimer("Work", std::chrono::minutes(25), [this]() {
+  timers.emplaceTimer("Work", work_time, [this]() {
     start_break_sound.stop();
     start_break_sound.play();
     fmt::print("\n");
     timers.getTimer(5).start();
   });
-  timers.emplaceTimer("Break", std::chrono::minutes(5), [this]() {
+  timers.emplaceTimer("Break", break_time, [this]() {
     start_break_sound.stop();
     start_break_sound.play();
     fmt::print("\n");
     timers.getTimer(6).start();
   });
-  timers.emplaceTimer("Work", std::chrono::minutes(25), [this]() {
+  timers.emplaceTimer("Work", work_time, [this]() {
     start_break_sound.stop();
     start_break_sound.play();
     fmt::print("\n");
     timers.getTimer(7).start();
   });
-  timers.emplaceTimer("Break", std::chrono::minutes(15), [this]() {
+  timers.emplaceTimer("Break", long_break_time, [this]() {
     start_break_sound.stop();
     start_break_sound.play();
     fmt::print("\n");
