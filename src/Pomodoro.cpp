@@ -1,5 +1,5 @@
 #include "Pomodoro.hpp"
-#include "Resources.hpp"
+#include "utility/SoundsDictionary.hpp"
 #include <cassert>
 #include <filesystem>
 #include <fmt/chrono.h>
@@ -13,10 +13,10 @@ Pomodoro::Pomodoro(pomodoro::color::Set colors_, std::chrono::minutes work_time,
                    std::chrono::minutes break_time,
                    std::chrono::minutes long_break_time)
     : colors(colors_) {
-  assert(std::filesystem::exists(pomodoro::start_break_sound_file));
-  assert(std::filesystem::exists(pomodoro::start_work_sound_file));
-  start_break_sound.openFromFile(pomodoro::start_break_sound_file.string());
-  start_work_sound.openFromFile(pomodoro::start_work_sound_file.string());
+  assert(std::filesystem::exists(pomodoro::sounds::file::start_break));
+  assert(std::filesystem::exists(pomodoro::sounds::file::start_work));
+  start_break_sound.openFromFile(pomodoro::sounds::file::start_break.string());
+  start_work_sound.openFromFile(pomodoro::sounds::file::start_work.string());
 
   timers.emplaceTimer("Work", work_time, [this]() {
     start_break_sound.stop();

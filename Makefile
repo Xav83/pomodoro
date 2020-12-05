@@ -1,4 +1,4 @@
 
 format:
-	@(clang-format -i src/*pp src/color/*pp)
+	@(clang-format -i src/*pp src/color/*pp src/utility/*pp)
 	@(cmake-format -i CMakeLists.txt)

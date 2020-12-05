@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Timers.hpp"
-#include "color/set.hpp"
+#include "color/Set.hpp"
 #include <SFML/Audio.hpp>
 #include <utility>
 
