@@ -5,11 +5,11 @@
 #include <fmt/chrono.h>
 #include <fmt/core.h>
 
-Pomodoro::Pomodoro(pomodoro::ColorSet colors_)
+Pomodoro::Pomodoro(pomodoro::color::Set colors_)
     : Pomodoro(colors_, std::chrono::minutes(25), std::chrono::minutes(5),
                std::chrono::minutes(15)) {}
 
-Pomodoro::Pomodoro(pomodoro::ColorSet colors_, std::chrono::minutes work_time,
+Pomodoro::Pomodoro(pomodoro::color::Set colors_, std::chrono::minutes work_time,
                    std::chrono::minutes break_time,
                    std::chrono::minutes long_break_time)
     : colors(colors_) {

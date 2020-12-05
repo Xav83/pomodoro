@@ -1,5 +1,5 @@
-#include "Colors.hpp"
 #include "Pomodoro.hpp"
+#include "color/Dictionary.hpp"
 #include <argh.h>
 #include <thread>
 #include <utility>
@@ -11,15 +11,16 @@ int main(int, char *argv[]) {
     auto color_set_selected{0};
     parser({"-c", "--color"}, 0) >> color_set_selected;
 
-    if (color_set_selected >= pomodoro::colors.size()) {
-      fmt::print("Error : [-c|--color]=[0-{}]\n", pomodoro::colors.size() - 1);
+    if (color_set_selected >= pomodoro::color::dictionary.size()) {
+      fmt::print("Error : [-c|--color]=[0-{}]\n",
+                 pomodoro::color::dictionary.size() - 1);
       fmt::print("The argument passed was {} whereas the accepted numbers are "
                  "between 0 and {} included\n",
-                 color_set_selected, pomodoro::colors.size() - 1);
+                 color_set_selected, pomodoro::color::dictionary.size() - 1);
       std::terminate();
     }
 
-    return pomodoro::colors[color_set_selected];
+    return pomodoro::color::dictionary[color_set_selected];
   }();
 
   const auto work_time = [&]() {

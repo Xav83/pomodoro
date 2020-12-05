@@ -1,10 +1,10 @@
 #pragma once
 
-#include "ColorSet.hpp"
+#include "Set.hpp"
 #include <array>
 
-namespace pomodoro {
-constexpr std::array<pomodoro::ColorSet, 2> colors{{
+namespace pomodoro::color {
+constexpr std::array<pomodoro::color::Set, 2> dictionary{{
     {fmt::color::cadet_blue, fmt::color::golden_rod},
     {fmt::color::light_coral, fmt::color::light_blue},
 }};

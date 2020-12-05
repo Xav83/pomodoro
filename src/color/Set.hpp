@@ -2,9 +2,9 @@
 
 #include <fmt/color.h>
 
-namespace pomodoro {
-struct ColorSet {
+namespace pomodoro::color {
+struct Set {
   fmt::color work_color;
   fmt::color break_color;
 };
-} // namespace pomodoro
+} // namespace pomodoro::color
