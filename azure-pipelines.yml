@@ -24,36 +24,43 @@ jobs:
           imageName: 'ubuntu-18.04'
           generator: Unix Makefiles
           build_configuration: 'Debug'
+          cppcheck: 'ON'
         ubuntu_release:
           imageName: 'ubuntu-18.04'
           generator: Unix Makefiles
           build_configuration: 'Release'
+          cppcheck: 'ON'
         mac_debug:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Debug'
+          cppcheck: 'OFF'
         mac_release:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Release'
+          cppcheck: 'OFF'
         windows_debug:
           imageName: 'windows-2019'
           generator: Visual Studio 16 2019
           build_configuration: 'Debug'
+          cppcheck: 'ON'
         windows_release:
           imageName: 'windows-2019'
           generator: Visual Studio 16 2019
           build_configuration: 'Release'
+          cppcheck: 'ON'
     pool:
         vmImage: $(imageName)
     steps:
     - script: |
-        choco install conan
+        choco install conan cppcheck
         refreshenv
       displayName: 'Installs Dependencies'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Windows_NT'))
     - script: |
         pip3 install conan
+        brew install cppcheck
       displayName: 'Installs Dependencies'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Darwin'))
     - script: |
@@ -64,12 +71,13 @@ jobs:
         pip3 install pip --upgrade
         pip3 install setuptools
         pip3 install conan
+        sudo apt-get install cppcheck
       displayName: 'Installs Dependencies'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
     - script: |
         mkdir -p build
         cd build
-        cmake .. -G "$(generator)" -DCMAKE_BUILD_TYPE=$(build_configuration)
+        cmake .. -G "$(generator)" -DCMAKE_BUILD_TYPE=$(build_configuration) -DRUN_CPPCHECK=$(cppcheck)
       displayName: 'Generates the Solution'
     - script: |
         cd build

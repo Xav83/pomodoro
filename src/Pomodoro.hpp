@@ -7,8 +7,8 @@
 
 class Pomodoro {
 public:
-  Pomodoro(pomodoro::color::Set colors);
-  Pomodoro(pomodoro::color::Set colors, std::chrono::minutes work_time,
+  explicit Pomodoro(pomodoro::color::Set colors_);
+  Pomodoro(pomodoro::color::Set colors_, std::chrono::minutes work_time,
            std::chrono::minutes break_time,
            std::chrono::minutes long_break_time);
   ~Pomodoro();
