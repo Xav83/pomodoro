@@ -1,13 +1,13 @@
 #pragma once
 
-#include "color/Dictionary.hpp"
+#include "NumbersDictionary.hpp"
 #include <string_view>
 
 namespace pomodoro::strings {
 const auto color_flag_help_message = fmt::format(
     "-c,--color=[0 - {}]\n"
     "  Sets the set of colors used for the work and break period.\n",
-    pomodoro::color::dictionary.size() - 1);
+    pomodoro::numbers::number_of_colors - 1);
 const auto work_flag_help_message =
     fmt::format("-w,--work=[1 - {}]\n"
                 "  Sets the time of the work period.\n",

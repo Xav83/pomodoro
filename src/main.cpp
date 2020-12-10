@@ -1,5 +1,6 @@
 #include "Pomodoro.hpp"
 #include "color/Dictionary.hpp"
+#include "utility/NumbersDictionary.hpp"
 #include "utility/StringsDictionary.hpp"
 #include <argh.h>
 #include <thread>
@@ -17,13 +18,12 @@ int main(int, char *argv[]) {
     auto color_set_selected{0};
     parser({"-c", "--color"}, 0) >> color_set_selected;
 
-    if (color_set_selected >= pomodoro::color::dictionary.size()) {
-      fmt::print(pomodoro::strings::color_error_message,
-                 pomodoro::color::dictionary.size() - 1);
+    if (color_set_selected >= pomodoro::numbers::number_of_colors) {
+      fmt::print(pomodoro::strings::color_error_message);
       fmt::print(
           "\nThe argument passed was {} whereas the accepted numbers are "
           "between 0 and {} included\n",
-          color_set_selected, pomodoro::color::dictionary.size() - 1);
+          color_set_selected, pomodoro::numbers::number_of_colors - 1);
       std::terminate();
     }
 
@@ -31,8 +31,9 @@ int main(int, char *argv[]) {
   }();
 
   const auto work_time = [&]() {
-    auto work_time_selected{25};
-    parser({"-w", "--work"}, 25) >> work_time_selected;
+    auto work_time_selected{pomodoro::numbers::default_work_time};
+    parser({"-w", "--work"}, pomodoro::numbers::default_work_time) >>
+        work_time_selected;
     if (work_time_selected == 0) {
       fmt::print(pomodoro::strings::work_error_message);
       fmt::print("\nYou cannot have a work time of 0 minutes\n");
@@ -42,8 +43,9 @@ int main(int, char *argv[]) {
   }();
 
   const auto break_time = [&]() {
-    auto break_time_selected{5};
-    parser({"-b", "--break"}, 5) >> break_time_selected;
+    auto break_time_selected{pomodoro::numbers::default_break_time};
+    parser({"-b", "--break"}, pomodoro::numbers::default_break_time) >>
+        break_time_selected;
     if (break_time_selected == 0) {
       fmt::print(pomodoro::strings::break_error_message);
       fmt::print("\nYou cannot have a break time of 0 minutes\n");
@@ -53,8 +55,10 @@ int main(int, char *argv[]) {
   }();
 
   const auto long_break_time = [&]() {
-    auto long_break_time_selected{15};
-    parser({"-lb", "--long-break"}, 15) >> long_break_time_selected;
+    auto long_break_time_selected{pomodoro::numbers::default_long_break_time};
+    parser({"-lb", "--long-break"},
+           pomodoro::numbers::default_long_break_time) >>
+        long_break_time_selected;
     if (long_break_time_selected == 0) {
       fmt::print(pomodoro::strings::long_break_error_message);
       fmt::print("\nYou cannot have a long break time of 0 minutes\n");

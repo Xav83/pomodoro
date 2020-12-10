@@ -7,8 +7,10 @@
 #include <fmt/core.h>
 
 Pomodoro::Pomodoro(pomodoro::color::Set colors_)
-    : Pomodoro(colors_, std::chrono::minutes(25), std::chrono::minutes(5),
-               std::chrono::minutes(15)) {}
+    : Pomodoro(
+          colors_, std::chrono::minutes(pomodoro::numbers::default_work_time),
+          std::chrono::minutes(pomodoro::numbers::default_break_time),
+          std::chrono::minutes(pomodoro::numbers::default_long_break_time)) {}
 
 Pomodoro::Pomodoro(pomodoro::color::Set colors_, std::chrono::minutes work_time,
                    std::chrono::minutes break_time,
