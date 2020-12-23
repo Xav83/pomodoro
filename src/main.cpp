@@ -1,6 +1,6 @@
+#include "Configuration.hpp"
 #include "Pomodoro.hpp"
 #include "color/Dictionary.hpp"
-#include "utility/NumbersDictionary.hpp"
 #include "utility/StringsDictionary.hpp"
 #include <argh.h>
 #include <thread>
@@ -67,7 +67,10 @@ int main(int, char *argv[]) {
     return std::chrono::minutes(long_break_time_selected);
   }();
 
-  Pomodoro pomodoro(color_set, work_time, break_time, long_break_time);
+  pomodoro::Configuration configuration(color_set, work_time, break_time,
+                                        long_break_time);
+
+  Pomodoro pomodoro(configuration);
   pomodoro.run();
 
   while (pomodoro.isRunning()) {

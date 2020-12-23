@@ -5,12 +5,13 @@
 #include <SFML/Audio.hpp>
 #include <utility>
 
+namespace pomodoro {
+class Configuration;
+}
+
 class Pomodoro {
 public:
-  explicit Pomodoro(pomodoro::color::Set colors_);
-  Pomodoro(pomodoro::color::Set colors_, std::chrono::minutes work_time,
-           std::chrono::minutes break_time,
-           std::chrono::minutes long_break_time);
+  Pomodoro(const pomodoro::Configuration &configuration);
   ~Pomodoro();
 
   void run();
