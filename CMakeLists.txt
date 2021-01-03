@@ -39,11 +39,17 @@ include(${PROJECT_BINARY_DIR}/conanbuildinfo_multi.cmake)
 conan_basic_setup(TARGETS)
 
 add_executable(
-  pomodoro src/main.cpp src/Timers.cpp src/Configuration.cpp src/Pomodoro.cpp
-           src/Timer.cpp src/utility/SoundsDictionary.cpp)
+  pomodoro
+  src/main.cpp
+  src/Timers.cpp
+  src/Configuration.cpp
+  src/ConfigurationFile.cpp
+  src/Pomodoro.cpp
+  src/Timer.cpp
+  src/utility/FilesDictionary.cpp)
 set_property(TARGET pomodoro PROPERTY CXX_STANDARD 17)
 target_link_libraries(pomodoro PUBLIC CONAN_PKG::argh CONAN_PKG::fmt
-                                      CONAN_PKG::sfml)
+                                      CONAN_PKG::sfml CONAN_PKG::nlohmann_json)
 target_include_directories(pomodoro PUBLIC src)
 
 make_directory("${POMODORO_SOUND_INSTALL_FOLDER}")

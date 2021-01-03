@@ -1,6 +1,7 @@
-#include "Configuration.hpp"
+#include "ConfigurationFile.hpp"
 #include "Pomodoro.hpp"
 #include "color/Dictionary.hpp"
+#include "utility/FilesDictionary.hpp"
 #include "utility/StringsDictionary.hpp"
 #include <argh.h>
 #include <thread>
@@ -14,10 +15,16 @@ int main(int, char *argv[]) {
     return EXIT_SUCCESS;
   }
 
-  const auto color_set = [&]() {
-    auto color_set_selected{0};
-    parser({"-c", "--color"}, 0) >> color_set_selected;
+  pomodoro::ConfigurationFile configurationFile(pomodoro::files::configuration);
+  auto configuration = [&configurationFile]() {
+    if (std::filesystem::exists(pomodoro::files::configuration)) {
+      return configurationFile.load();
+    }
+    return pomodoro::Configuration();
+  }();
 
+  auto color_set_selected{0};
+  if (parser({"-c", "--color"}) >> color_set_selected) {
     if (color_set_selected >= pomodoro::numbers::number_of_colors) {
       fmt::print(pomodoro::strings::color_error_message);
       fmt::print(
@@ -26,49 +33,44 @@ int main(int, char *argv[]) {
           color_set_selected, pomodoro::numbers::number_of_colors - 1);
       std::terminate();
     }
+    configuration.setColorId(
+        static_cast<pomodoro::color::Id>(color_set_selected));
+  }
 
-    return pomodoro::color::dictionary[color_set_selected];
-  }();
-
-  const auto work_time = [&]() {
-    auto work_time_selected{pomodoro::numbers::default_work_time};
-    parser({"-w", "--work"}, pomodoro::numbers::default_work_time) >>
-        work_time_selected;
+  auto work_time_selected{pomodoro::numbers::default_work_time};
+  if (parser({"-w", "--work"}) >> work_time_selected) {
     if (work_time_selected == 0) {
       fmt::print(pomodoro::strings::work_error_message);
       fmt::print("\nYou cannot have a work time of 0 minutes\n");
       std::terminate();
     }
-    return std::chrono::minutes(work_time_selected);
-  }();
+    configuration.setWorkTime(std::chrono::minutes(work_time_selected));
+  }
 
-  const auto break_time = [&]() {
-    auto break_time_selected{pomodoro::numbers::default_break_time};
-    parser({"-b", "--break"}, pomodoro::numbers::default_break_time) >>
-        break_time_selected;
+  auto break_time_selected{pomodoro::numbers::default_break_time};
+  if (parser({"-b", "--break"}) >> break_time_selected) {
     if (break_time_selected == 0) {
       fmt::print(pomodoro::strings::break_error_message);
       fmt::print("\nYou cannot have a break time of 0 minutes\n");
       std::terminate();
     }
-    return std::chrono::minutes(break_time_selected);
-  }();
+    configuration.setBreakTime(std::chrono::minutes(break_time_selected));
+  }
 
-  const auto long_break_time = [&]() {
-    auto long_break_time_selected{pomodoro::numbers::default_long_break_time};
-    parser({"-lb", "--long-break"},
-           pomodoro::numbers::default_long_break_time) >>
-        long_break_time_selected;
+  auto long_break_time_selected{pomodoro::numbers::default_long_break_time};
+  if (parser({"-lb", "--long-break"}) >> long_break_time_selected) {
     if (long_break_time_selected == 0) {
       fmt::print(pomodoro::strings::long_break_error_message);
       fmt::print("\nYou cannot have a long break time of 0 minutes\n");
       std::terminate();
     }
-    return std::chrono::minutes(long_break_time_selected);
-  }();
+    configuration.setLongBreakTime(
+        std::chrono::minutes(long_break_time_selected));
+  }
 
-  pomodoro::Configuration configuration(color_set, work_time, break_time,
-                                        long_break_time);
+  if (parser[{"-s", "--set-as-default"}]) {
+    configurationFile.save(configuration);
+  }
 
   Pomodoro pomodoro(configuration);
   pomodoro.run();

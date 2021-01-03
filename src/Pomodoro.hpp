@@ -11,7 +11,7 @@ class Configuration;
 
 class Pomodoro {
 public:
-  Pomodoro(const pomodoro::Configuration &configuration);
+  explicit Pomodoro(const pomodoro::Configuration &configuration);
   ~Pomodoro();
 
   void run();

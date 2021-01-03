@@ -1,6 +1,6 @@
 #include "Pomodoro.hpp"
 #include "Configuration.hpp"
-#include "utility/SoundsDictionary.hpp"
+#include "utility/FilesDictionary.hpp"
 #include "utility/StringsDictionary.hpp"
 #include <cassert>
 #include <filesystem>
@@ -9,10 +9,10 @@
 
 Pomodoro::Pomodoro(const pomodoro::Configuration &configuration)
     : colors(configuration.getColors()) {
-  assert(std::filesystem::exists(pomodoro::sounds::file::start_break));
-  assert(std::filesystem::exists(pomodoro::sounds::file::start_work));
-  start_break_sound.openFromFile(pomodoro::sounds::file::start_break.string());
-  start_work_sound.openFromFile(pomodoro::sounds::file::start_work.string());
+  assert(std::filesystem::exists(pomodoro::files::sounds::start_break));
+  assert(std::filesystem::exists(pomodoro::files::sounds::start_work));
+  start_break_sound.openFromFile(pomodoro::files::sounds::start_break.string());
+  start_work_sound.openFromFile(pomodoro::files::sounds::start_work.string());
 
   timers.emplaceTimer(pomodoro::strings::work_timer,
                       configuration.getWorkTime(), [this]() {

@@ -2,6 +2,7 @@
 fmt/7.1.2
 sfml/2.5.0@bincrafters/stable
 argh/1.2.1@adishavit/stable
+nlohmann_json/3.9.1
 
 [generators]
 cmake_multi

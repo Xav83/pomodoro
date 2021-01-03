@@ -20,6 +20,10 @@ const auto long_break_flag_help_message =
     fmt::format("-lb,--long-break=[1 - {}]\n"
                 "  Sets the time of the long break period.\n",
                 std::numeric_limits<int>::max());
+const auto set_as_default_flag_help_message = fmt::format(
+    "-s,--set-as-default\n"
+    "  Saves the configuration choosen as the default on for future use.\n",
+    std::numeric_limits<int>::max());
 
 const auto color_error_message = fmt::format(
     "Error : the set of colors doesn't exists\n{}", color_flag_help_message);
@@ -36,7 +40,7 @@ const auto long_break_error_message =
 const auto help_message =
     fmt::format("Pomodoro options:\n\n{}\n{}\n{}\n{}", color_flag_help_message,
                 work_flag_help_message, break_flag_help_message,
-                long_break_flag_help_message);
+                long_break_flag_help_message, set_as_default_flag_help_message);
 
 constexpr std::string_view work_timer = "Work";
 constexpr std::string_view break_timer = "Break";
