@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.17)
 project(Project)
 
 include(${PROJECT_SOURCE_DIR}/.cmake/cppcheck.cmake)
+include(${PROJECT_SOURCE_DIR}/.cmake/clang_tidy.cmake)
 
 find_program(
   CONAN_EXE

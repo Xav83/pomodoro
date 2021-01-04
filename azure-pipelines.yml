@@ -25,31 +25,37 @@ jobs:
           generator: Unix Makefiles
           build_configuration: 'Debug'
           cppcheck: 'ON'
+          clang_tidy: 'ON'
         ubuntu_release:
           imageName: 'ubuntu-18.04'
           generator: Unix Makefiles
           build_configuration: 'Release'
           cppcheck: 'ON'
+          clang_tidy: 'ON'
         mac_debug:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Debug'
           cppcheck: 'OFF'
+          clang_tidy: 'OFF'
         mac_release:
           imageName: 'macOS-10.15'
           generator: Xcode
           build_configuration: 'Release'
           cppcheck: 'OFF'
+          clang_tidy: 'OFF'
         windows_debug:
           imageName: 'windows-2019'
           generator: Visual Studio 16 2019
           build_configuration: 'Debug'
           cppcheck: 'ON'
+          clang_tidy: 'OFF'
         windows_release:
           imageName: 'windows-2019'
           generator: Visual Studio 16 2019
           build_configuration: 'Release'
           cppcheck: 'ON'
+          clang_tidy: 'OFF'
     pool:
         vmImage: $(imageName)
     steps:
@@ -71,13 +77,13 @@ jobs:
         pip3 install pip --upgrade
         pip3 install setuptools
         pip3 install conan
-        sudo apt-get install cppcheck
+        sudo apt-get install cppcheck clang-tidy
       displayName: 'Installs Dependencies'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
     - script: |
         mkdir -p build
         cd build
-        cmake .. -G "$(generator)" -DCMAKE_BUILD_TYPE=$(build_configuration) -DRUN_CPPCHECK=$(cppcheck)
+        cmake .. -G "$(generator)" -DCMAKE_BUILD_TYPE=$(build_configuration) -DRUN_CPPCHECK=$(cppcheck) -DRUN_CLANG_TIDY=$(clang_tidy)
       displayName: 'Generates the Solution'
     - script: |
         cd build
