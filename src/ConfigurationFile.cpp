@@ -6,8 +6,8 @@
 
 using pomodoro::ConfigurationFile;
 
-ConfigurationFile::ConfigurationFile(const std::filesystem::path &file)
-    : configuration(file) {}
+ConfigurationFile::ConfigurationFile(std::filesystem::path file)
+    : configuration(std::move(file)) {}
 ConfigurationFile::~ConfigurationFile() = default;
 
 void ConfigurationFile::save(Configuration configurationToSave) {

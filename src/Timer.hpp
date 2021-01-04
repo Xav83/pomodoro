@@ -8,7 +8,7 @@ namespace pomodoro {
 class Timer {
 public:
   Timer(
-      std::string_view name, std::chrono::milliseconds delayInMs,
+      std::string_view name_, std::chrono::milliseconds delayInMs_,
       std::function<void()> callback_ = []() {});
   ~Timer();
 

@@ -6,10 +6,10 @@
 namespace pomodoro {
 struct ConfigurationFile {
 public:
-  explicit ConfigurationFile(const std::filesystem::path &file);
+  explicit ConfigurationFile(std::filesystem::path file);
   ~ConfigurationFile();
 
-  void save(Configuration configuration);
+  void save(Configuration configurationToSave);
   Configuration load() const;
 
 private:
