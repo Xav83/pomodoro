@@ -15,9 +15,12 @@ std::filesystem::path pomodoro::files::sounds::start_work =
 std::filesystem::path pomodoro::files::configuration =
     "~/Library/Application Support/Pomodoro/save.cfg";
 #else
+// NOLINTNEXTLINE(cert-err58-cpp)
 std::filesystem::path pomodoro::files::sounds::start_break =
     "~/.pomodoro/PowerDown1.ogg";
+// NOLINTNEXTLINE(cert-err58-cpp)
 std::filesystem::path pomodoro::files::sounds::start_work =
     "~/.pomodoro/PowerUp1.ogg";
+// NOLINTNEXTLINE(cert-err58-cpp)
 std::filesystem::path pomodoro::files::configuration = "~/.pomodoro/save.cfg";
 #endif

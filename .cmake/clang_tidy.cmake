@@ -47,6 +47,6 @@ else()
 
   set(CMAKE_CXX_CLANG_TIDY
       ${CLANG_TIDY}
-      -checks=-*readability-*,modernize-*,portability-*,performance-*,misc-*,cppcoreguidelines-*,concurrency-*,clang-analyzer-*
+      -checks=-*readability-*,modernize-*,portability-*,performance-*,misc-*,cppcoreguidelines-*,concurrency-*,clang-analyzer-*,cert-*
       --warnings-as-errors=*)
 endif()
