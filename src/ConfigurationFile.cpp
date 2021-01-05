@@ -10,7 +10,7 @@ ConfigurationFile::ConfigurationFile(std::filesystem::path file)
     : configuration(std::move(file)) {}
 ConfigurationFile::~ConfigurationFile() = default;
 
-void ConfigurationFile::save(Configuration configurationToSave) {
+void ConfigurationFile::save(const Configuration &configurationToSave) {
   nlohmann::json j;
   j["color_id"] = configurationToSave.getColorId();
   j["work_time"] = configurationToSave.getWorkTime().count();

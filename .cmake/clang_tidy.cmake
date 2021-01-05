@@ -46,6 +46,7 @@ else()
   message(STATUS "Clang-tidy version detected : ${CLANG_TIDY_VERSION_OUTPUT}")
 
   set(CMAKE_CXX_CLANG_TIDY
-      ${CLANG_TIDY} -checks=-*readability-*,modernize-*,portability-*
+      ${CLANG_TIDY}
+      -checks=-*readability-*,modernize-*,portability-*,performance-*
       --warnings-as-errors=*)
 endif()

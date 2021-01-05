@@ -9,7 +9,7 @@ public:
   explicit ConfigurationFile(std::filesystem::path file);
   ~ConfigurationFile();
 
-  void save(Configuration configurationToSave);
+  void save(const Configuration &configurationToSave);
   Configuration load() const;
 
 private:
