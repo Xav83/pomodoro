@@ -47,6 +47,6 @@ else()
 
   set(CMAKE_CXX_CLANG_TIDY
       ${CLANG_TIDY}
-      -checks=-*readability-*,modernize-*,portability-*,performance-*
+      -checks=-*readability-*,modernize-*,portability-*,performance-*,misc-*
       --warnings-as-errors=*)
 endif()
