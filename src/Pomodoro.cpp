@@ -9,7 +9,9 @@
 
 Pomodoro::Pomodoro(const pomodoro::Configuration &configuration)
     : colors(configuration.getColors()) {
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
   assert(std::filesystem::exists(pomodoro::files::sounds::start_break));
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
   assert(std::filesystem::exists(pomodoro::files::sounds::start_work));
   start_break_sound.openFromFile(pomodoro::files::sounds::start_break.string());
   start_work_sound.openFromFile(pomodoro::files::sounds::start_work.string());
@@ -85,6 +87,7 @@ std::string Pomodoro::getCurrentState() const {
   const auto it =
       std::find_if(timers.cbegin(), timers.cend(),
                    [](const auto &timer) { return timer.isRunning(); });
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
   assert(it != timers.cend());
 
   const auto name = [&it, this]() {

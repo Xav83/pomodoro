@@ -15,6 +15,7 @@ void Timers::emplaceTimer(std::string_view name,
 }
 
 Timer &Timers::getTimer(size_t index) {
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
   assert(index < timers.size());
   return timers[index];
 }

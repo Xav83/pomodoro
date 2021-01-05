@@ -20,7 +20,7 @@ void Configuration::setColorId(pomodoro::color::Id color_id_) {
 pomodoro::color::Id Configuration::getColorId() const { return color_id; }
 
 pomodoro::color::Set Configuration::getColors() const {
-  return pomodoro::color::dictionary[static_cast<size_t>(color_id)];
+  return pomodoro::color::dictionary.at(static_cast<size_t>(color_id));
 }
 
 void Configuration::setWorkTime(std::chrono::minutes work_time_) {
