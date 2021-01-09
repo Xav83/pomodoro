@@ -60,3 +60,14 @@ add_custom_command(
   COMMAND cp *.ogg ${POMODORO_SOUND_INSTALL_FOLDER}
   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/res/
   COMMENT "Moves the sound files into the right folder")
+
+enable_testing()
+
+file(GLOB POMODORO_TEST_FILES ${PROJECT_SOURCE_DIR}/tst/*.cpp)
+
+add_executable(pomodoro_tests ${POMODORO_TEST_FILES})
+set_property(TARGET pomodoro_tests PROPERTY CXX_STANDARD 17)
+target_link_libraries(pomodoro_tests PUBLIC pomodoro_lib CONAN_PKG::gtest)
+
+include(GoogleTest)
+gtest_discover_tests(pomodoro_tests)
