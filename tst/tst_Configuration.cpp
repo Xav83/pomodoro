@@ -2,6 +2,7 @@
 #include "Configuration.hpp"
 #include "color/Dictionary.hpp"
 
+// NOLINTNEXTLINE(cppcoreguidelines-special-member-functions, cert-err58-cpp, cppcoreguidelines-owning-memory)
 TEST(tst_Configuration, DefaultConfiguration) {
 pomodoro::Configuration conf;
 
