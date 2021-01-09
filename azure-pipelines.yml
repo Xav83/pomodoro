@@ -62,12 +62,12 @@ jobs:
     - script: |
         choco install conan cppcheck
         refreshenv
-      displayName: 'Installs Dependencies'
+      displayName: 'Installs Dependencies (Windows_NT)'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Windows_NT'))
     - script: |
         pip3 install conan
         brew install cppcheck
-      displayName: 'Installs Dependencies'
+      displayName: 'Installs Dependencies (Darwin)'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Darwin'))
     - script: |
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 1
@@ -78,7 +78,7 @@ jobs:
         pip3 install setuptools
         pip3 install conan
         sudo apt-get install cppcheck clang-tidy
-      displayName: 'Installs Dependencies'
+      displayName: 'Installs Dependencies (Linux)'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
     - script: |
         mkdir -p build
@@ -92,7 +92,7 @@ jobs:
     - script: |
         cd build
         ctest -C $(build_configuration) -T Test --output-on-failure
-      displayName: 'Compiles the solution in $(build_configuration) Configuration'
+      displayName: 'Runs the tests in $(build_configuration) configuration'
     - task: PublishTestResults@2
       inputs:
         testResultsFormat: 'cTest'
