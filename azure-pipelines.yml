@@ -72,11 +72,14 @@ jobs:
     - script: |
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 1
         sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 1
+        sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-10 1
         sudo update-alternatives --set gcc "/usr/bin/gcc-10"
         sudo update-alternatives --set g++ "/usr/bin/g++-10"
+        sudo update-alternatives --set gcov "/usr/bin/gcov-10"
         pip3 install pip --upgrade
         pip3 install setuptools
         pip3 install conan
+        pip3 install cpp-coveralls
         sudo apt-get install cppcheck clang-tidy
       displayName: 'Installs Dependencies (Linux)'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
@@ -98,3 +101,10 @@ jobs:
         testResultsFormat: 'cTest'
         testResultsFiles: 'build/Testing/*/Test.xml'
         failTaskOnFailedTests: true
+    - script: |
+        /home/vsts/.local/bin/coveralls --root $(Build.Repository.LocalPath) -E tst -E build
+      displayName: 'Sends code coverage to Coveralls'
+      condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
+      env:
+        COVERALLS_REPO_TOKEN: $(COVERALLS_REPO_TOKEN)
+        COVERALLS_SERVICE_NAME: "Azure-Pipelines"

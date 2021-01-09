@@ -3,6 +3,10 @@
 This project is an implementation of a [pomodoro](https://en.wikipedia.org/wiki/Pomodoro_Technique).
 For now, the focus is on making a simple terminal application.
 
+## Checks
+
+[![Coverage Status](https://coveralls.io/repos/github/Xav83/pomodoro/badge.svg)](https://coveralls.io/github/Xav83/pomodoro)
+
 ## Features
 
 - [X] Aternate automatically between "Work" and "Break" periods.
