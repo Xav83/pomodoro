@@ -89,3 +89,12 @@ jobs:
         cd build
         cmake --build . --config $(build_configuration)
       displayName: 'Compiles the solution in $(build_configuration) Configuration'
+    - script: |
+        cd build
+        ctest -C $(build_configuration) -T Test --output-on-failure
+      displayName: 'Compiles the solution in $(build_configuration) Configuration'
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'cTest'
+        testResultsFiles: 'build/Testing/*/Test.xml'
+        failTaskOnFailedTests: true
