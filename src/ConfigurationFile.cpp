@@ -9,7 +9,10 @@ using pomodoro::ConfigurationFile;
 ConfigurationFile::ConfigurationFile(std::filesystem::path file)
     : configuration(std::move(file)) {
   // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-  assert(std::filesystem::is_regular_file(configuration));
+  assert(not configuration.empty());
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+  assert(not std::filesystem::exists(configuration) or
+         std::filesystem::is_regular_file(configuration));
 }
 
 ConfigurationFile::~ConfigurationFile() = default;
