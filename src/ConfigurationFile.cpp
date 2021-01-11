@@ -7,7 +7,11 @@
 using pomodoro::ConfigurationFile;
 
 ConfigurationFile::ConfigurationFile(std::filesystem::path file)
-    : configuration(std::move(file)) {}
+    : configuration(std::move(file)) {
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+  assert(std::filesystem::is_regular_file(configuration));
+}
+
 ConfigurationFile::~ConfigurationFile() = default;
 
 void ConfigurationFile::save(const Configuration &configurationToSave) {
