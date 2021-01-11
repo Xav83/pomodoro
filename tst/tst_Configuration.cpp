@@ -30,3 +30,20 @@ TEST(tst_Configuration, CustomConfigurationConstuctor) {
                                   pomodoro::color::Id::default_2)]);
   EXPECT_EQ(conf.getLongBreakTime(), std::chrono::minutes(13));
 }
+
+// NOLINTNEXTLINE
+TEST(tst_Configuration, CustomConfigurationSetters) {
+  pomodoro::Configuration conf;
+
+  conf.setColorId(pomodoro::color::Id::default_2);
+  conf.setWorkTime(std::chrono::minutes(42));
+  conf.setBreakTime(std::chrono::minutes(666));
+  conf.setLongBreakTime(std::chrono::minutes(13));
+
+  EXPECT_EQ(conf.getColorId(), pomodoro::color::Id::default_2);
+  EXPECT_EQ(conf.getWorkTime(), std::chrono::minutes(42));
+  EXPECT_EQ(conf.getBreakTime(), std::chrono::minutes(666));
+  EXPECT_EQ(conf.getColors(), pomodoro::color::dictionary[static_cast<size_t>(
+                                  pomodoro::color::Id::default_2)]);
+  EXPECT_EQ(conf.getLongBreakTime(), std::chrono::minutes(13));
+}
