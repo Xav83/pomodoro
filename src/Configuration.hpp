@@ -27,6 +27,12 @@ public:
   void setLongBreakTime(std::chrono::minutes long_break_time_);
   std::chrono::minutes getLongBreakTime() const;
 
+  bool operator==(const Configuration &other) const {
+    return color_id == other.color_id and work_time == other.work_time and
+           break_time == other.break_time and
+           long_break_time == other.long_break_time;
+  }
+
 private:
   color::Id color_id = pomodoro::color::Id::default_1;
   std::chrono::minutes work_time =

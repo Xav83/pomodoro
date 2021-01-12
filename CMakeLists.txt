@@ -43,17 +43,21 @@ add_library(
   pomodoro_lib src/Timers.cpp src/Configuration.cpp src/ConfigurationFile.cpp
                src/Pomodoro.cpp src/Timer.cpp src/utility/FilesDictionary.cpp)
 set_property(TARGET pomodoro_lib PROPERTY CXX_STANDARD 17)
-target_compile_options(pomodoro_lib PRIVATE -fprofile-arcs -ftest-coverage)
+target_compile_options(
+  pomodoro_lib
+  PRIVATE $<$<CXX_COMPILER_ID:GNU>: -fprofile-arcs -ftest-coverage>
+          $<$<CXX_COMPILER_ID:MSVC>: /permissive->)
 target_link_libraries(
   pomodoro_lib PUBLIC CONAN_PKG::fmt CONAN_PKG::sfml CONAN_PKG::nlohmann_json
-                      -fprofile-arcs -ftest-coverage)
+                      $<$<CXX_COMPILER_ID:GNU>: -fprofile-arcs -ftest-coverage>)
 target_include_directories(pomodoro_lib PUBLIC ${PROJECT_SOURCE_DIR}/src)
 
 add_executable(pomodoro src/main.cpp)
 set_property(TARGET pomodoro PROPERTY CXX_STANDARD 17)
-target_compile_options(pomodoro PRIVATE -fprofile-arcs -ftest-coverage)
-target_link_libraries(pomodoro PUBLIC pomodoro_lib CONAN_PKG::argh
-                                      -fprofile-arcs -ftest-coverage)
+target_compile_options(
+  pomodoro PRIVATE $<$<CXX_COMPILER_ID:GNU>: -fprofile-arcs -ftest-coverage>
+                   $<$<CXX_COMPILER_ID:MSVC>: /permissive->)
+target_link_libraries(pomodoro PUBLIC pomodoro_lib CONAN_PKG::argh)
 target_include_directories(pomodoro PUBLIC src)
 
 make_directory("${POMODORO_SOUND_INSTALL_FOLDER}")
@@ -71,9 +75,11 @@ file(GLOB POMODORO_TEST_FILES ${PROJECT_SOURCE_DIR}/tst/*.cpp)
 
 add_executable(pomodoro_tests ${POMODORO_TEST_FILES})
 set_property(TARGET pomodoro_tests PROPERTY CXX_STANDARD 17)
-target_compile_options(pomodoro_tests PRIVATE -fprofile-arcs -ftest-coverage)
-target_link_libraries(pomodoro_tests PUBLIC pomodoro_lib CONAN_PKG::gtest
-                                            -fprofile-arcs -ftest-coverage)
+target_compile_options(
+  pomodoro_tests
+  PRIVATE $<$<CXX_COMPILER_ID:GNU>: -fprofile-arcs -ftest-coverage>
+          $<$<CXX_COMPILER_ID:MSVC>: /permissive->)
+target_link_libraries(pomodoro_tests PUBLIC pomodoro_lib CONAN_PKG::gtest)
 
 include(GoogleTest)
 gtest_discover_tests(pomodoro_tests)

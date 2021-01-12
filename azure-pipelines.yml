@@ -100,7 +100,6 @@ jobs:
       inputs:
         testResultsFormat: 'cTest'
         testResultsFiles: 'build/Testing/*/Test.xml'
-        failTaskOnFailedTests: true
     - script: |
         export CI_NAME="AzurePipelines"
         export CI_BUILD_NUMBER=$(Build.BuildNumber)

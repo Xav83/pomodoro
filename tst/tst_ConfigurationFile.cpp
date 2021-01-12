@@ -20,6 +20,22 @@ TEST(tst_ConfigurationFile, FolderAsConfigurationFile) {
 
 // NOLINTNEXTLINE
 TEST(tst_ConfigurationFile, PomodoroConfigurationFileAsConfigurationFile) {
-  // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg)
   pomodoro::ConfigurationFile conf_file(pomodoro::files::configuration);
+  std::filesystem::remove(pomodoro::files::configuration);
+}
+
+// NOLINTNEXTLINE
+TEST(tst_ConfigurationFile, SaveAndRestoreConfigurationFile) {
+  pomodoro::Configuration conf_to_save;
+  conf_to_save.setWorkTime(std::chrono::minutes(69));
+  {
+    pomodoro::ConfigurationFile conf_file(pomodoro::files::configuration);
+    conf_file.save(conf_to_save);
+  }
+  pomodoro::ConfigurationFile conf_file(pomodoro::files::configuration);
+  pomodoro::Configuration conf_restored = conf_file.load();
+
+  EXPECT_EQ(conf_to_save, conf_restored);
+
+  std::filesystem::remove(pomodoro::files::configuration);
 }
