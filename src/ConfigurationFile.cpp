@@ -7,7 +7,14 @@
 using pomodoro::ConfigurationFile;
 
 ConfigurationFile::ConfigurationFile(std::filesystem::path file)
-    : configuration(std::move(file)) {}
+    : configuration(std::move(file)) {
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+  assert(not configuration.empty());
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+  assert(not std::filesystem::exists(configuration) or
+         std::filesystem::is_regular_file(configuration));
+}
+
 ConfigurationFile::~ConfigurationFile() = default;
 
 void ConfigurationFile::save(const Configuration &configurationToSave) {
@@ -18,14 +25,24 @@ void ConfigurationFile::save(const Configuration &configurationToSave) {
   j["long_break_time"] = configurationToSave.getLongBreakTime().count();
 
   std::ofstream fileStream(configuration);
-  fileStream << std::setw(4) << j << std::endl;
+  try {
+    fileStream << std::setw(4) << j << std::endl;
+  } catch (const std::exception &e) {
+    std::cerr << e.what() << '\n';
+  }
+
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+  assert(std::filesystem::exists(configuration));
 }
 
 pomodoro::Configuration ConfigurationFile::load() const {
   nlohmann::json j;
   {
     std::ifstream fileStream(configuration);
-    fileStream >> j;
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+    assert(std::filesystem::exists(configuration) and
+           std::filesystem::is_regular_file(configuration));
+    j = nlohmann::json::parse(fileStream);
   }
   return pomodoro::Configuration(j["color_id"],
                                  std::chrono::minutes(j["work_time"]),

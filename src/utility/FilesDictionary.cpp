@@ -1,4 +1,5 @@
 #include "FilesDictionary.hpp"
+#include <fmt/core.h>
 
 #ifdef _WIN32
 std::filesystem::path pomodoro::files::sounds::start_break =
@@ -9,18 +10,21 @@ std::filesystem::path pomodoro::files::configuration =
     "C:/ProgramData/pomodoro/save.cfg";
 #elif __APPLE__
 std::filesystem::path pomodoro::files::sounds::start_break =
-    "~/Library/Application Support/Pomodoro/PowerDown1.ogg";
+    fmt::format("{}/Library/Application Support/Pomodoro/PowerDown1.ogg",
+                std::getenv("HOME"));
 std::filesystem::path pomodoro::files::sounds::start_work =
-    "~/Library/Application Support/Pomodoro/PowerUp1.ogg";
-std::filesystem::path pomodoro::files::configuration =
-    "~/Library/Application Support/Pomodoro/save.cfg";
+    fmt::format("{}/Library/Application Support/Pomodoro/PowerUp1.ogg",
+                std::getenv("HOME"));
+std::filesystem::path pomodoro::files::configuration = fmt::format(
+    "{}/Library/Application Support/Pomodoro/save.cfg", std::getenv("HOME"));
 #else
 // NOLINTNEXTLINE(cert-err58-cpp)
 std::filesystem::path pomodoro::files::sounds::start_break =
-    "~/.pomodoro/PowerDown1.ogg";
+    fmt::format("{}/.pomodoro/PowerDown1.ogg", std::getenv("HOME"));
 // NOLINTNEXTLINE(cert-err58-cpp)
 std::filesystem::path pomodoro::files::sounds::start_work =
-    "~/.pomodoro/PowerUp1.ogg";
+    fmt::format("{}/.pomodoro/PowerUp1.ogg", std::getenv("HOME"));
 // NOLINTNEXTLINE(cert-err58-cpp)
-std::filesystem::path pomodoro::files::configuration = "~/.pomodoro/save.cfg";
+std::filesystem::path pomodoro::files::configuration =
+    fmt::format("{}/.pomodoro/save.cfg", std::getenv("HOME"));
 #endif
