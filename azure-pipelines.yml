@@ -101,18 +101,9 @@ jobs:
         testResultsFormat: 'cTest'
         testResultsFiles: 'build/Testing/*/Test.xml'
     - script: |
-        export CI_NAME="AzurePipelines"
-        export CI_BUILD_NUMBER=$(Build.BuildNumber)
-        export CI_PULL_REQUEST=$(System.PullRequest.PullRequestId)
-        export CI_BUILD_URL=$(Build.Repository.Uri)
-        export CI_BRANCH=$(Build.SourceBranch)
-        echo ${CI_NAME}
-        echo ${CI_BUILD_NUMBER}
-        echo ${CI_PULL_REQUEST}
-        echo ${CI_BUILD_URL}
-        echo ${CI_BRANCH}
-        /home/vsts/.local/bin/coveralls --root $(Build.Repository.LocalPath) -E tst -E build
+        export TRAVIS_BRANCH=$(System.PullRequest.SourceBranch)
+        /home/vsts/.local/bin/coveralls -E tst -E build
       displayName: 'Sends code coverage to Coveralls'
-      condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'), eq(variables['build_configuration'], 'Debug'))
+      condition: and(succeeded(), eq(variables['Agent.OS'], 'Linux'), eq(variables['build_configuration'], 'Debug'))
       env:
         COVERALLS_REPO_TOKEN: $(COVERALLS_REPO_TOKEN)
