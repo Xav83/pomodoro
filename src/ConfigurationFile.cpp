@@ -25,11 +25,7 @@ void ConfigurationFile::save(const Configuration &configurationToSave) {
   j["long_break_time"] = configurationToSave.getLongBreakTime().count();
 
   std::ofstream fileStream(configuration);
-  try {
-    fileStream << std::setw(4) << j << std::endl;
-  } catch (const std::exception &e) {
-    std::cerr << e.what() << '\n';
-  }
+  fileStream << std::setw(4) << j << std::endl;
 
   // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
   assert(std::filesystem::exists(configuration));
