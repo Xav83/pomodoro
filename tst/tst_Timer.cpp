@@ -1,4 +1,5 @@
 #include "Timer.hpp"
+#include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
 // NOLINTNEXTLINE
@@ -24,3 +25,23 @@ TEST(tst_Timer, DefaultTimer) {
             std::chrono::duration_cast<std::chrono::seconds>(
                 std::chrono::milliseconds(42)));
 }
+
+namespace pomodoro {
+class MockTimer : public Timer {
+public:
+  MockTimer(std::string_view name, std::chrono::milliseconds delayInMs)
+      : pomodoro::Timer(name, delayInMs) {}
+  MOCK_METHOD(void, sleep_for, (std::chrono::milliseconds), (override));
+  MOCK_METHOD(void, run, (), (override));
+};
+
+// NOLINTNEXTLINE
+TEST(tst_Timer, CallSleepForOnStart) {
+  MockTimer timer("name", std::chrono::milliseconds(42));
+  EXPECT_CALL(timer, sleep_for);
+  EXPECT_CALL(timer, run);
+  timer.start();
+  ASSERT_TRUE(timer.timer_process.joinable());
+  timer.timer_process.join();
+}
+} // namespace pomodoro

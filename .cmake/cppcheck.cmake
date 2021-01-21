@@ -53,6 +53,16 @@ else()
 
   set(CMAKE_CXX_CPPCHECK "${CPPCHECK}")
 
+  set(CPPCHECK_SUPPRESSION_FILE
+      "${PROJECT_SOURCE_DIR}/.cppcheck/suppression.txt")
+
+  if(NOT EXISTS ${CPPCHECK_SUPPRESSION_FILE})
+    message(
+      FATAL_ERROR
+        "Cppcheck - Missing suppression list file: ${CPPCHECK_SUPPRESSION_FILE} not found."
+    )
+  endif()
+
   if(${CMAKE_GENERATOR} STREQUAL "Unix Makefiles" OR ${CMAKE_GENERATOR}
                                                      STREQUAL "Ninja")
     list(
@@ -64,11 +74,13 @@ else()
       "--std=c++14"
       "--force"
       "--inline-suppr"
-      "--suppressions-list=${PROJECT_SOURCE_DIR}/.cppcheck/suppression.txt")
+      "--suppressions-list=${CPPCHECK_SUPPRESSION_FILE}")
+    message(STATUS "Command Cppcheck: ${CMAKE_CXX_CPPCHECK}")
   else()
     add_custom_target(
       CPPCHECK_ANALYSIS ALL
       COMMAND ${CMAKE_CXX_CPPCHECK} --project=${CMAKE_PROJECT_NAME}.sln
+              --suppressions-list=${CPPCHECK_SUPPRESSION_FILE}
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
       COMMENT "Static code analysis using cppcheck.")
   endif()

@@ -1,7 +1,6 @@
 #include "Timer.hpp"
 #include <cassert>
 #include <chrono>
-#include <thread>
 
 using pomodoro::Timer;
 
@@ -14,17 +13,20 @@ Timer::Timer(std::string_view name_, std::chrono::milliseconds delayInMs_,
   assert(delayInMs != std::chrono::milliseconds(0));
 }
 
+Timer::Timer(const Timer &other)
+    : name(other.name), delayInMs(other.delayInMs), callback(other.callback) {}
+
 Timer::~Timer() = default;
 
 void Timer::start() {
   isCurrentlyRunning = true;
   timeAtStart = std::chrono::high_resolution_clock::now();
-  std::thread t([this]() {
-    std::this_thread::sleep_for(std::chrono::milliseconds(delayInMs));
+  timer_process = std::thread([this]() {
+    sleep_for(std::chrono::milliseconds(delayInMs));
     isCurrentlyRunning = false;
     callback();
   });
-  t.detach();
+  run();
 }
 
 bool Timer::isRunning() const { return isCurrentlyRunning; }
@@ -39,3 +41,9 @@ std::chrono::seconds Timer::getRemainingTime() const {
 }
 
 std::string_view Timer::getName() const { return name; }
+
+void Timer::sleep_for(std::chrono::milliseconds delay) {
+  std::this_thread::sleep_for(std::chrono::milliseconds(delay));
+}
+
+void Timer::run() { timer_process.detach(); }

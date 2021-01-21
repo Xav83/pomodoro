@@ -24,13 +24,13 @@ jobs:
           imageName: 'ubuntu-18.04'
           generator: Unix Makefiles
           build_configuration: 'Debug'
-          cppcheck: 'ON'
+          cppcheck: 'OFF' # The version of cppcheck on Ubuntu is too old (1.82)
           clang_tidy: 'ON'
         ubuntu_release:
           imageName: 'ubuntu-18.04'
           generator: Unix Makefiles
           build_configuration: 'Release'
-          cppcheck: 'ON'
+          cppcheck: 'OFF' # The version of cppcheck on Ubuntu is too old (1.82)
           clang_tidy: 'ON'
         mac_debug:
           imageName: 'macOS-10.15'
@@ -70,6 +70,7 @@ jobs:
       displayName: 'Installs Dependencies (Darwin)'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Darwin'))
     - script: |
+        sudo apt-get update -y
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 1
         sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 1
         sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-10 1
