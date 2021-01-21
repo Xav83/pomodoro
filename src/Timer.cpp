@@ -7,7 +7,12 @@ using pomodoro::Timer;
 
 Timer::Timer(std::string_view name_, std::chrono::milliseconds delayInMs_,
              std::function<void()> callback_)
-    : name(name_), delayInMs(delayInMs_), callback(std::move(callback_)) {}
+    : name(name_), delayInMs(delayInMs_), callback(std::move(callback_)) {
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+  assert(not name.empty());
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+  assert(delayInMs != std::chrono::milliseconds(0));
+}
 
 Timer::~Timer() = default;
 
@@ -30,7 +35,7 @@ std::chrono::seconds Timer::getRemainingTime() const {
         delayInMs - (std::chrono::high_resolution_clock::now() - timeAtStart));
     return elapsed;
   }
-  return std::chrono::seconds(0);
+  return std::chrono::duration_cast<std::chrono::seconds>(delayInMs);
 }
 
 std::string_view Timer::getName() const { return name; }
