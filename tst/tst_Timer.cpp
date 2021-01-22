@@ -29,8 +29,10 @@ TEST(tst_Timer, DefaultTimer) {
 namespace pomodoro {
 class MockTimer : public Timer {
 public:
-  MockTimer(std::string_view name, std::chrono::milliseconds delayInMs)
-      : pomodoro::Timer(name, delayInMs) {}
+  MockTimer(
+      std::string_view name, std::chrono::milliseconds delayInMs,
+      std::function<void()> callback = []() {})
+      : pomodoro::Timer(name, delayInMs, callback) {}
   MOCK_METHOD(void, sleep_for, (std::chrono::milliseconds), (override));
   MOCK_METHOD(void, run, (), (override));
 };
@@ -46,7 +48,7 @@ TEST(tst_Timer, CallSleepForOnStart) {
 }
 
 // NOLINTNEXTLINE
-TEST(tst_Timer, CallbackRunned) {
+TEST(tst_Timer, DefaultCallbackRunned) {
   MockTimer timer("name", std::chrono::milliseconds(42));
   auto hasBeenCalled = false;
   timer.callback = [&hasBeenCalled]() { hasBeenCalled = true; };
@@ -55,4 +57,16 @@ TEST(tst_Timer, CallbackRunned) {
   timer.timer_process.join();
   EXPECT_TRUE(hasBeenCalled);
 }
+
+// NOLINTNEXTLINE
+TEST(tst_Timer, SpecifiedCallbackRunned) {
+  auto hasBeenCalled = false;
+  MockTimer timer("name", std::chrono::milliseconds(42),
+                  [&hasBeenCalled]() { hasBeenCalled = true; });
+  timer.start();
+  ASSERT_TRUE(timer.timer_process.joinable());
+  timer.timer_process.join();
+  EXPECT_TRUE(hasBeenCalled);
+}
+
 } // namespace pomodoro

@@ -27,7 +27,8 @@ private:
   virtual void run();
 
   FRIEND_TEST(tst_Timer, CallSleepForOnStart);
-  FRIEND_TEST(tst_Timer, CallbackRunned);
+  FRIEND_TEST(tst_Timer, DefaultCallbackRunned);
+  FRIEND_TEST(tst_Timer, SpecifiedCallbackRunned);
 
   std::string_view name;
   std::chrono::milliseconds delayInMs{0};
