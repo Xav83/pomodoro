@@ -29,6 +29,7 @@ private:
   FRIEND_TEST(tst_Timer, CallSleepForOnStart);
   FRIEND_TEST(tst_Timer, DefaultCallbackRunned);
   FRIEND_TEST(tst_Timer, SpecifiedCallbackRunned);
+  FRIEND_TEST(tst_Timer, TimerIsRunning);
 
   std::string_view name;
   std::chrono::milliseconds delayInMs{0};

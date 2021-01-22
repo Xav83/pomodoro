@@ -69,4 +69,23 @@ TEST(tst_Timer, SpecifiedCallbackRunned) {
   EXPECT_TRUE(hasBeenCalled);
 }
 
+// NOLINTNEXTLINE
+TEST(tst_Timer, TimerIsRunning) {
+  MockTimer timer("name", std::chrono::milliseconds(42));
+
+  ON_CALL(timer, sleep_for)
+      .WillByDefault(::testing::Invoke([&timer](std::chrono::milliseconds) {
+        EXPECT_TRUE(timer.isRunning());
+      }));
+  ON_CALL(timer, run).WillByDefault(::testing::Invoke([&timer]() {
+    EXPECT_TRUE(timer.isRunning());
+  }));
+
+  EXPECT_CALL(timer, sleep_for).Times(1);
+  EXPECT_CALL(timer, run).Times(1);
+  timer.start();
+  ASSERT_TRUE(timer.timer_process.joinable());
+  timer.timer_process.join();
+  EXPECT_FALSE(timer.isRunning());
+}
 } // namespace pomodoro
