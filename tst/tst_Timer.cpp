@@ -44,4 +44,15 @@ TEST(tst_Timer, CallSleepForOnStart) {
   ASSERT_TRUE(timer.timer_process.joinable());
   timer.timer_process.join();
 }
+
+// NOLINTNEXTLINE
+TEST(tst_Timer, CallbackRunned) {
+  MockTimer timer("name", std::chrono::milliseconds(42));
+  auto hasBeenCalled = false;
+  timer.callback = [&hasBeenCalled]() { hasBeenCalled = true; };
+  timer.start();
+  ASSERT_TRUE(timer.timer_process.joinable());
+  timer.timer_process.join();
+  EXPECT_TRUE(hasBeenCalled);
+}
 } // namespace pomodoro
