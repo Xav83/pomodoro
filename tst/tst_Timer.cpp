@@ -40,8 +40,8 @@ public:
 // NOLINTNEXTLINE
 TEST(tst_Timer, CallSleepForOnStart) {
   MockTimer timer("name", std::chrono::milliseconds(42));
-  EXPECT_CALL(timer, sleep_for);
-  EXPECT_CALL(timer, run);
+  EXPECT_CALL(timer, sleep_for).Times(1);
+  EXPECT_CALL(timer, run).Times(1);
   timer.start();
   ASSERT_TRUE(timer.timer_process.joinable());
   timer.timer_process.join();
