@@ -27,6 +27,18 @@ TEST(tst_Timer, DefaultTimer) {
                 std::chrono::milliseconds(42)));
 }
 
+// NOLINTNEXTLINE
+TEST(tst_Timer, Equality) {
+  pomodoro::Timer timer("name", std::chrono::milliseconds(42));
+  pomodoro::Timer timerNotEqual_1("other name", std::chrono::milliseconds(42));
+  pomodoro::Timer timerNotEqual_2("name", std::chrono::milliseconds(69));
+  pomodoro::Timer timerEqual("name", std::chrono::milliseconds(42));
+
+  EXPECT_EQ(timer, timerEqual);
+  EXPECT_NE(timer, timerNotEqual_1);
+  EXPECT_NE(timer, timerNotEqual_2);
+}
+
 namespace pomodoro {
 class MockTimer : public Timer {
 public:
