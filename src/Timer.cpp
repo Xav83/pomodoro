@@ -19,11 +19,17 @@ Timer::Timer(const Timer &other)
 Timer::~Timer() = default;
 
 void Timer::start() {
-  isCurrentlyRunning = true;
+  {
+    std::lock_guard<std::mutex> lk(lockIsRunning);
+    isCurrentlyRunning = true;
+  }
   timeAtStart = get_current_time();
   timer_process = std::thread([this]() {
     sleep_for(std::chrono::milliseconds(delayInMs));
-    isCurrentlyRunning = false;
+    {
+      std::lock_guard<std::mutex> lk(lockIsRunning);
+      isCurrentlyRunning = false;
+    }
     callback();
   });
   run();

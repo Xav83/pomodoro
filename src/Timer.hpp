@@ -3,6 +3,7 @@
 #include "gtest/gtest_prod.h"
 #include <chrono>
 #include <functional>
+#include <mutex>
 #include <string_view>
 #include <thread>
 
@@ -37,6 +38,7 @@ private:
   std::string_view name;
   std::chrono::milliseconds delayInMs{0};
   std::function<void()> callback;
+  std::mutex lockIsRunning;
   bool isCurrentlyRunning{false};
   std::chrono::time_point<std::chrono::high_resolution_clock> timeAtStart;
   std::thread timer_process;
