@@ -48,8 +48,14 @@ target_compile_options(
   PRIVATE $<$<CXX_COMPILER_ID:GNU>: -fprofile-arcs -ftest-coverage>
           $<$<CXX_COMPILER_ID:MSVC>: /permissive->)
 target_link_libraries(
-  pomodoro_lib PUBLIC CONAN_PKG::fmt CONAN_PKG::sfml CONAN_PKG::nlohmann_json
-                      $<$<CXX_COMPILER_ID:GNU>: -fprofile-arcs -ftest-coverage>)
+  pomodoro_lib
+  PUBLIC CONAN_PKG::fmt
+         CONAN_PKG::sfml
+         CONAN_PKG::nlohmann_json
+         CONAN_PKG::gtest
+         $<$<CXX_COMPILER_ID:GNU>:
+         -fprofile-arcs
+         -ftest-coverage>)
 target_include_directories(pomodoro_lib PUBLIC ${PROJECT_SOURCE_DIR}/src)
 
 add_executable(pomodoro src/main.cpp)
@@ -79,7 +85,7 @@ target_compile_options(
   pomodoro_tests
   PRIVATE $<$<CXX_COMPILER_ID:GNU>: -fprofile-arcs -ftest-coverage>
           $<$<CXX_COMPILER_ID:MSVC>: /permissive->)
-target_link_libraries(pomodoro_tests PUBLIC pomodoro_lib CONAN_PKG::gtest)
+target_link_libraries(pomodoro_tests PUBLIC pomodoro_lib)
 
 include(GoogleTest)
 gtest_discover_tests(pomodoro_tests)
