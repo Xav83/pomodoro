@@ -20,7 +20,7 @@ Timer::~Timer() = default;
 
 void Timer::start() {
   isCurrentlyRunning = true;
-  timeAtStart = std::chrono::high_resolution_clock::now();
+  timeAtStart = get_current_time();
   timer_process = std::thread([this]() {
     sleep_for(std::chrono::milliseconds(delayInMs));
     isCurrentlyRunning = false;
@@ -34,7 +34,7 @@ bool Timer::isRunning() const { return isCurrentlyRunning; }
 std::chrono::seconds Timer::getRemainingTime() const {
   if (isRunning()) {
     auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(
-        delayInMs - (std::chrono::high_resolution_clock::now() - timeAtStart));
+        delayInMs - (get_current_time() - timeAtStart));
     return elapsed;
   }
   return std::chrono::duration_cast<std::chrono::seconds>(delayInMs);
@@ -47,3 +47,8 @@ void Timer::sleep_for(std::chrono::milliseconds delay) {
 }
 
 void Timer::run() { timer_process.detach(); }
+
+std::chrono::time_point<std::chrono::high_resolution_clock>
+Timer::get_current_time() const {
+  return std::chrono::high_resolution_clock::now();
+}

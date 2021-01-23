@@ -25,11 +25,14 @@ public:
 private:
   virtual void sleep_for(std::chrono::milliseconds delay);
   virtual void run();
+  virtual std::chrono::time_point<std::chrono::high_resolution_clock>
+  get_current_time() const;
 
   FRIEND_TEST(tst_Timer, CallSleepForOnStart);
   FRIEND_TEST(tst_Timer, DefaultCallbackRunned);
   FRIEND_TEST(tst_Timer, SpecifiedCallbackRunned);
   FRIEND_TEST(tst_Timer, TimerIsRunning);
+  FRIEND_TEST(tst_Timer, TimerRemaining);
 
   std::string_view name;
   std::chrono::milliseconds delayInMs{0};

@@ -1,6 +1,7 @@
 #include "Timer.hpp"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
+#include <chrono>
 
 // NOLINTNEXTLINE
 TEST(tst_Timer, TimerWithoutName) {
@@ -32,9 +33,11 @@ public:
   MockTimer(
       std::string_view name, std::chrono::milliseconds delayInMs,
       std::function<void()> callback = []() {})
-      : pomodoro::Timer(name, delayInMs, callback) {}
+      : pomodoro::Timer(name, delayInMs, std::move(callback)) {}
   MOCK_METHOD(void, sleep_for, (std::chrono::milliseconds), (override));
   MOCK_METHOD(void, run, (), (override));
+  MOCK_METHOD(std::chrono::time_point<std::chrono::high_resolution_clock>,
+              get_current_time, (), (const));
 };
 
 // NOLINTNEXTLINE
@@ -85,6 +88,31 @@ TEST(tst_Timer, TimerIsRunning) {
   EXPECT_CALL(timer, run).Times(1);
   timer.start();
   ASSERT_TRUE(timer.timer_process.joinable());
+  timer.timer_process.join();
+  EXPECT_FALSE(timer.isRunning());
+}
+
+// NOLINTNEXTLINE
+TEST(tst_Timer, TimerRemaining) {
+  MockTimer timer("name", std::chrono::seconds(42));
+
+  auto initialTime = std::chrono::high_resolution_clock::now();
+  auto timeAtFirstCheck = initialTime + std::chrono::seconds(2);
+  auto timeAtTheEnd = initialTime + std::chrono::seconds(42);
+
+  EXPECT_CALL(timer, sleep_for).Times(1);
+  EXPECT_CALL(timer, run).Times(1);
+  EXPECT_CALL(timer, get_current_time)
+      .Times(2)
+      .WillOnce(::testing::Return(initialTime))
+      .WillOnce(::testing::Return(timeAtFirstCheck))
+      .WillOnce(::testing::Return(timeAtTheEnd));
+
+  timer.start();
+  ASSERT_TRUE(timer.timer_process.joinable());
+  EXPECT_EQ(timer.getRemainingTime(),
+            std::chrono::duration_cast<std::chrono::seconds>(timeAtTheEnd -
+                                                             timeAtFirstCheck));
   timer.timer_process.join();
   EXPECT_FALSE(timer.isRunning());
 }
