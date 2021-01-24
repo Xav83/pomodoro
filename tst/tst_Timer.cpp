@@ -1,5 +1,5 @@
+#include "MockTimer.hpp"
 #include "Timer.hpp"
-#include "gmock/gmock.h"
 #include "gtest/gtest.h"
 #include <chrono>
 
@@ -40,18 +40,6 @@ TEST(tst_Timer, Equality) {
 }
 
 namespace pomodoro {
-class MockTimer : public Timer {
-public:
-  MockTimer(
-      std::string_view name, std::chrono::milliseconds delayInMs,
-      std::function<void()> callback = []() {})
-      : pomodoro::Timer(name, delayInMs, std::move(callback)) {}
-  MOCK_METHOD(void, sleep_for, (std::chrono::milliseconds), (override));
-  MOCK_METHOD(void, run, (), (override));
-  MOCK_METHOD(std::chrono::time_point<std::chrono::high_resolution_clock>,
-              get_current_time, (), (const));
-};
-
 // NOLINTNEXTLINE
 TEST(tst_Timer, CallSleepForOnStart) {
   MockTimer timer("name", std::chrono::milliseconds(42));
