@@ -46,3 +46,40 @@ TEST(tst_Timers, WithSeveralTimers) {
   // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg)
   EXPECT_DEBUG_DEATH(timers.getTimer(3), "");
 }
+
+// NOLINTNEXTLINE
+TEST(tst_Timers, WithNoTimerRunning) {
+  pomodoro::Timers timers;
+  timers.emplaceTimer("timer 1", std::chrono::milliseconds(1), []() {});
+  timers.emplaceTimer("timer 2", std::chrono::milliseconds(2), []() {});
+  timers.emplaceTimer("timer 3", std::chrono::milliseconds(3), []() {});
+
+  EXPECT_FALSE(timers.hasOneTimerRunning());
+}
+
+namespace pomodoro {
+// NOLINTNEXTLINE
+TEST(tst_Timers, WithOneTimerRunning) {
+  pomodoro::Timers timers;
+  timers.emplaceTimer("timer 1", std::chrono::milliseconds(1), []() {});
+  timers.emplaceTimer("timer 2", std::chrono::milliseconds(2), []() {});
+  timers.emplaceTimer("timer 3", std::chrono::milliseconds(3), []() {});
+
+  EXPECT_FALSE(timers.hasOneTimerRunning());
+  timers.getTimer(1).isCurrentlyRunning = true;
+  EXPECT_TRUE(timers.hasOneTimerRunning());
+}
+
+// NOLINTNEXTLINE
+TEST(tst_Timers, WithSeveralTimersRunning) {
+  pomodoro::Timers timers;
+  timers.emplaceTimer("timer 1", std::chrono::milliseconds(1), []() {});
+  timers.emplaceTimer("timer 2", std::chrono::milliseconds(2), []() {});
+  timers.emplaceTimer("timer 3", std::chrono::milliseconds(3), []() {});
+
+  EXPECT_FALSE(timers.hasOneTimerRunning());
+  timers.getTimer(1).isCurrentlyRunning = true;
+  timers.getTimer(2).isCurrentlyRunning = true;
+  EXPECT_TRUE(timers.hasOneTimerRunning());
+}
+} // namespace pomodoro

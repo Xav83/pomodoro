@@ -37,6 +37,8 @@ private:
   FRIEND_TEST(tst_Timer, SpecifiedCallbackRunned);
   FRIEND_TEST(tst_Timer, TimerIsRunning);
   FRIEND_TEST(tst_Timer, TimerRemaining);
+  FRIEND_TEST(tst_Timers, WithOneTimerRunning);
+  FRIEND_TEST(tst_Timers, WithSeveralTimersRunning);
 
   std::string_view name;
   std::chrono::milliseconds delayInMs{0};
