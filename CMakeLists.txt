@@ -39,6 +39,8 @@ execute_process(
 include(${PROJECT_BINARY_DIR}/conanbuildinfo_multi.cmake)
 conan_basic_setup(TARGETS)
 
+# Pomodoro shared library
+
 add_library(
   pomodoro_lib
   src/shared/Timers.cpp src/shared/Configuration.cpp
@@ -60,6 +62,8 @@ target_link_libraries(
          -ftest-coverage>)
 target_include_directories(pomodoro_lib PUBLIC ${PROJECT_SOURCE_DIR}/src)
 
+# Pomodoro command line application
+
 add_executable(pomodoro src/command_line/main.cpp
                         src/command_line/CommandLineParser.cpp)
 set_property(TARGET pomodoro PROPERTY CXX_STANDARD 17)
@@ -77,6 +81,10 @@ add_custom_command(
   COMMAND cp *.ogg ${POMODORO_SOUND_INSTALL_FOLDER}
   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/res/
   COMMENT "Moves the sound files into the right folder")
+
+# Pomodoro desktop application
+
+# Pomodoro tests
 
 include(CTest)
 
