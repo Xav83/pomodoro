@@ -1,5 +1,5 @@
 #include "CommandLineParser.hpp"
-#include "utility/StringsDictionary.hpp"
+#include "shared/utility/StringsDictionary.hpp"
 
 pomodoro::CommandLineParser::Result
 pomodoro::CommandLineParser::getConfigurationFromCommandLine(

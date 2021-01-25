@@ -1,9 +1,9 @@
 #include "CommandLineParser.hpp"
-#include "ConfigurationFile.hpp"
-#include "Pomodoro.hpp"
-#include "color/Dictionary.hpp"
-#include "utility/FilesDictionary.hpp"
-#include "utility/StringsDictionary.hpp"
+#include "shared/ConfigurationFile.hpp"
+#include "shared/Pomodoro.hpp"
+#include "shared/color/Dictionary.hpp"
+#include "shared/utility/FilesDictionary.hpp"
+#include "shared/utility/StringsDictionary.hpp"
 #include <thread>
 #include <utility>
 

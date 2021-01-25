@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Configuration.hpp"
+#include "shared/Configuration.hpp"
 #include <argh.h>
 
 namespace pomodoro::CommandLineParser {
