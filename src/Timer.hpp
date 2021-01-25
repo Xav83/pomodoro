@@ -23,6 +23,9 @@ public:
   std::chrono::seconds getRemainingTime() const;
   std::string_view getName() const;
 
+  bool operator==(const Timer &other) const;
+  bool operator!=(const Timer &other) const;
+
 private:
   virtual void sleep_for(std::chrono::milliseconds delay);
   virtual void run();
@@ -34,6 +37,8 @@ private:
   FRIEND_TEST(tst_Timer, SpecifiedCallbackRunned);
   FRIEND_TEST(tst_Timer, TimerIsRunning);
   FRIEND_TEST(tst_Timer, TimerRemaining);
+  FRIEND_TEST(tst_Timers, WithOneTimerRunning);
+  FRIEND_TEST(tst_Timers, WithSeveralTimersRunning);
 
   std::string_view name;
   std::chrono::milliseconds delayInMs{0};

@@ -1,2 +1,3 @@
 syntaxError:*tst/tst_Timer.cpp
+syntaxError:*tst/tst_Timers.cpp
 returnReference:*gtest/gtest-matchers.h

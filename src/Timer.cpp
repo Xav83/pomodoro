@@ -58,3 +58,9 @@ std::chrono::time_point<std::chrono::high_resolution_clock>
 Timer::get_current_time() const {
   return std::chrono::high_resolution_clock::now();
 }
+
+bool Timer::operator==(const Timer &other) const {
+  return name == other.name && delayInMs == other.delayInMs;
+}
+
+bool Timer::operator!=(const Timer &other) const { return !(*this == other); }
