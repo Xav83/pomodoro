@@ -14,7 +14,15 @@ constexpr std::array<pomodoro::color::Set, pomodoro::numbers::number_of_colors>
         {fmt::color::black, fmt::color::black},
     }};
 
-enum class Id : size_t { default_1, default_2, white, green, black, _Size };
+enum class Id : int {
+  no_color = -1,
+  default_1,
+  default_2,
+  white,
+  green,
+  black,
+  _Size
+};
 } // namespace pomodoro::color
 
 static_assert(static_cast<size_t>(pomodoro::color::Id::_Size) ==

@@ -1,4 +1,5 @@
 #include "Configuration.hpp"
+#include <cassert>
 
 using pomodoro::Configuration;
 
@@ -20,6 +21,11 @@ void Configuration::setColorId(pomodoro::color::Id color_id_) {
 pomodoro::color::Id Configuration::getColorId() const { return color_id; }
 
 pomodoro::color::Set Configuration::getColors() const {
+  if (color_id == pomodoro::color::Id::no_color) {
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+    assert(false);
+    return pomodoro::color::dictionary.at(0);
+  }
   return pomodoro::color::dictionary.at(static_cast<size_t>(color_id));
 }
 
