@@ -3,7 +3,8 @@
 
 pomodoro::CommandLineParser::Result
 pomodoro::CommandLineParser::getConfigurationFromCommandLine(
-    argh::parser parser, const pomodoro::Configuration &defaultConfiguration) {
+    const argh::parser &parser,
+    const pomodoro::Configuration &defaultConfiguration) {
   pomodoro::Configuration configuration = defaultConfiguration;
   auto color_set_selected{0};
   if (parser({"-c", "--color"}) >> color_set_selected) {

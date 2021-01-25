@@ -11,5 +11,6 @@ struct Result {
 };
 
 Result getConfigurationFromCommandLine(
-    argh::parser parser, const pomodoro::Configuration &defaultConfiguration);
+    const argh::parser &parser,
+    const pomodoro::Configuration &defaultConfiguration);
 } // namespace pomodoro::CommandLineParser
