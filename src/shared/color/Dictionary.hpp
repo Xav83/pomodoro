@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Set.hpp"
-#include "utility/NumbersDictionary.hpp"
+#include "shared/utility/NumbersDictionary.hpp"
 #include <array>
 
 namespace pomodoro::color {

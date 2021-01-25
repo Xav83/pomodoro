@@ -40,8 +40,10 @@ include(${PROJECT_BINARY_DIR}/conanbuildinfo_multi.cmake)
 conan_basic_setup(TARGETS)
 
 add_library(
-  pomodoro_lib src/Timers.cpp src/Configuration.cpp src/ConfigurationFile.cpp
-               src/Pomodoro.cpp src/Timer.cpp src/utility/FilesDictionary.cpp)
+  pomodoro_lib
+  src/shared/Timers.cpp src/shared/Configuration.cpp
+  src/shared/ConfigurationFile.cpp src/shared/Pomodoro.cpp src/shared/Timer.cpp
+  src/shared/utility/FilesDictionary.cpp)
 set_property(TARGET pomodoro_lib PROPERTY CXX_STANDARD 17)
 target_compile_options(
   pomodoro_lib
@@ -58,7 +60,7 @@ target_link_libraries(
          -ftest-coverage>)
 target_include_directories(pomodoro_lib PUBLIC ${PROJECT_SOURCE_DIR}/src)
 
-add_executable(pomodoro src/main.cpp)
+add_executable(pomodoro src/main.cpp src/CommandLineParser.cpp)
 set_property(TARGET pomodoro PROPERTY CXX_STANDARD 17)
 target_compile_options(
   pomodoro PRIVATE $<$<CXX_COMPILER_ID:GNU>: -fprofile-arcs -ftest-coverage>
@@ -86,6 +88,7 @@ target_compile_options(
   PRIVATE $<$<CXX_COMPILER_ID:GNU>: -fprofile-arcs -ftest-coverage>
           $<$<CXX_COMPILER_ID:MSVC>: /permissive->)
 target_link_libraries(pomodoro_tests PUBLIC pomodoro_lib)
+target_include_directories(pomodoro_tests PUBLIC src/shared)
 
 include(GoogleTest)
 gtest_discover_tests(pomodoro_tests)
