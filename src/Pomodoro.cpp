@@ -8,7 +8,7 @@
 #include <fmt/core.h>
 
 Pomodoro::Pomodoro(const pomodoro::Configuration &configuration)
-    : colors(configuration.getColors()) {
+    : color_id(configuration.getColorId()) {
   // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
   assert(std::filesystem::exists(pomodoro::files::sounds::start_break));
   // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
@@ -91,12 +91,15 @@ std::string Pomodoro::getCurrentState() const {
   assert(it != timers.cend());
 
   const auto name = [&it, this]() {
-    if (it->getName() == pomodoro::strings::work_timer) {
-      return fmt::format(fg(colors.work_color) | fmt::emphasis::bold,
-                         it->getName().data());
+    if (color_id != pomodoro::color::Id::no_color) {
+      auto color_set =
+          pomodoro::color::dictionary.at(static_cast<size_t>(color_id));
+      if (it->getName() == pomodoro::strings::work_timer) {
+        return fmt::format(fg(color_set.work_color), it->getName().data());
+      }
+      return fmt::format(fg(color_set.break_color), it->getName().data());
     }
-    return fmt::format(fg(colors.break_color) | fmt::emphasis::bold,
-                       it->getName().data());
+    return fmt::format(it->getName().data());
   }();
 
   return fmt::format(pomodoro::strings::current_timer, name,
