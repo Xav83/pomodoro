@@ -23,8 +23,15 @@ int main(int, char *argv[]) {
     return pomodoro::Configuration();
   }();
 
-  configuration =
-      CommandLineParser::getConfigurationFromCommandLine(parser, configuration);
+  auto parsing_result =
+      pomodoro::CommandLineParser::getConfigurationFromCommandLine(
+          parser, configuration);
+  if (not parsing_result.succeed) {
+    fmt::print(parsing_result.errorMessage);
+    std::terminate();
+  }
+
+  configuration = parsing_result.conf;
 
   if (parser[{"-s", "--set-as-default"}]) {
     configurationFile.save(configuration);
