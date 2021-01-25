@@ -47,3 +47,13 @@ TEST(tst_Configuration, CustomConfigurationSetters) {
                                   pomodoro::color::Id::default_2)]);
   EXPECT_EQ(conf.getLongBreakTime(), std::chrono::minutes(13));
 }
+
+// NOLINTNEXTLINE
+TEST(tst_Configuration, GettingColorsWhenNoColorIsSpecified) {
+  pomodoro::Configuration conf;
+
+  conf.setColorId(pomodoro::color::Id::no_color);
+  EXPECT_EQ(conf.getColorId(), pomodoro::color::Id::no_color);
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg)
+  EXPECT_DEBUG_DEATH(conf.getColors(), "");
+}

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Timers.hpp"
-#include "color/Set.hpp"
+#include "color/Dictionary.hpp"
 #include <SFML/Audio.hpp>
 #include <utility>
 
@@ -23,5 +23,5 @@ public:
 private:
   pomodoro::Timers timers;
   sf::Music start_break_sound, start_work_sound;
-  pomodoro::color::Set colors;
+  pomodoro::color::Id color_id;
 };
