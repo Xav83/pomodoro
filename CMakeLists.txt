@@ -58,7 +58,7 @@ target_link_libraries(
          -ftest-coverage>)
 target_include_directories(pomodoro_lib PUBLIC ${PROJECT_SOURCE_DIR}/src)
 
-add_executable(pomodoro src/main.cpp)
+add_executable(pomodoro src/main.cpp src/CommandLineParser.cpp)
 set_property(TARGET pomodoro PROPERTY CXX_STANDARD 17)
 target_compile_options(
   pomodoro PRIVATE $<$<CXX_COMPILER_ID:GNU>: -fprofile-arcs -ftest-coverage>
