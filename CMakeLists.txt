@@ -84,6 +84,14 @@ add_custom_command(
 
 # Pomodoro desktop application
 
+add_executable(pomodoro_desktop src/desktop/main.cpp)
+set_property(TARGET pomodoro_desktop PROPERTY CXX_STANDARD 17)
+target_compile_options(
+  pomodoro_desktop
+  PRIVATE $<$<CXX_COMPILER_ID:GNU>: -fprofile-arcs -ftest-coverage>
+          $<$<CXX_COMPILER_ID:MSVC>: /permissive->)
+target_include_directories(pomodoro_desktop PUBLIC src)
+
 # Pomodoro tests
 
 include(CTest)
