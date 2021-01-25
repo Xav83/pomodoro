@@ -25,12 +25,14 @@ int main(int, char *argv[]) {
 
   auto color_set_selected{0};
   if (parser({"-c", "--color"}) >> color_set_selected) {
-    if (color_set_selected >= pomodoro::numbers::number_of_colors) {
+    if (color_set_selected < pomodoro::numbers::color_id_min ||
+        color_set_selected >= pomodoro::numbers::number_of_colors) {
       fmt::print(pomodoro::strings::color_error_message);
       fmt::print(
           "\nThe argument passed was {} whereas the accepted numbers are "
-          "between 0 and {} included\n",
-          color_set_selected, pomodoro::numbers::number_of_colors - 1);
+          "between {} and {} included\n",
+          color_set_selected, pomodoro::numbers::color_id_min,
+          pomodoro::numbers::number_of_colors - 1);
       std::terminate();
     }
     configuration.setColorId(
