@@ -90,6 +90,7 @@ target_compile_options(
   pomodoro_desktop
   PRIVATE $<$<CXX_COMPILER_ID:GNU>: -fprofile-arcs -ftest-coverage>
           $<$<CXX_COMPILER_ID:MSVC>: /permissive->)
+target_link_libraries(pomodoro_desktop PUBLIC pomodoro_lib)
 target_include_directories(pomodoro_desktop PUBLIC src)
 
 # Pomodoro tests

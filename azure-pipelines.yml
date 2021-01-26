@@ -79,9 +79,9 @@ jobs:
         sudo update-alternatives --set gcov "/usr/bin/gcov-10"
         pip3 install pip --upgrade
         pip3 install setuptools
-        pip3 install conan
+        pip3 install conan==1.32.1
         pip3 install git+https://github.com/eddyxu/cpp-coveralls.git
-        sudo apt-get install cppcheck clang-tidy
+        sudo apt-get install cppcheck clang-tidy libgl1-mesa-dev
       displayName: 'Installs Dependencies (Linux)'
       condition: and(succeededOrFailed(), eq(variables['Agent.OS'], 'Linux'))
     - script: |
