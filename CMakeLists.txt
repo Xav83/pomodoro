@@ -53,14 +53,8 @@ target_compile_options(
   PRIVATE $<$<CXX_COMPILER_ID:GNU>: -fprofile-arcs -ftest-coverage>
           $<$<CXX_COMPILER_ID:MSVC>: /permissive->)
 target_link_libraries(
-  pomodoro_lib
-  PUBLIC CONAN_PKG::fmt
-         CONAN_PKG::sfml
-         CONAN_PKG::nlohmann_json
-         CONAN_PKG::gtest
-         $<$<CXX_COMPILER_ID:GNU>:
-         -fprofile-arcs
-         -ftest-coverage>)
+  pomodoro_lib PUBLIC CONAN_PKG::fmt CONAN_PKG::nlohmann_json CONAN_PKG::gtest
+                      $<$<CXX_COMPILER_ID:GNU>: -fprofile-arcs -ftest-coverage>)
 target_include_directories(pomodoro_lib PUBLIC ${PROJECT_SOURCE_DIR}/src)
 
 # Pomodoro command line application
@@ -71,7 +65,8 @@ set_property(TARGET pomodoro PROPERTY CXX_STANDARD 17)
 target_compile_options(
   pomodoro PRIVATE $<$<CXX_COMPILER_ID:GNU>: -fprofile-arcs -ftest-coverage>
                    $<$<CXX_COMPILER_ID:MSVC>: /permissive->)
-target_link_libraries(pomodoro PUBLIC pomodoro_lib CONAN_PKG::argh)
+target_link_libraries(pomodoro PUBLIC pomodoro_lib CONAN_PKG::sfml
+                                      CONAN_PKG::argh)
 target_include_directories(pomodoro PUBLIC src)
 
 make_directory("${POMODORO_RESOURCES_INSTALL_FOLDER}")
@@ -91,7 +86,7 @@ target_compile_options(
   pomodoro_desktop
   PRIVATE $<$<CXX_COMPILER_ID:GNU>: -fprofile-arcs -ftest-coverage>
           $<$<CXX_COMPILER_ID:MSVC>: /permissive->)
-target_link_libraries(pomodoro_desktop PUBLIC pomodoro_lib)
+target_link_libraries(pomodoro_desktop PUBLIC pomodoro_lib CONAN_PKG::sfml)
 target_include_directories(pomodoro_desktop PUBLIC src)
 
 make_directory("${POMODORO_RESOURCES_INSTALL_FOLDER}/Fonts")

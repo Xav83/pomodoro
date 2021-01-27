@@ -7,71 +7,59 @@
 #include <fmt/chrono.h>
 #include <fmt/core.h>
 
-Pomodoro::Pomodoro(const pomodoro::Configuration &configuration)
+Pomodoro::Pomodoro(const pomodoro::Configuration &configuration,
+                   std::function<void()> work_timer_callback,
+                   std::function<void()> break_timer_callback,
+                   std::function<void()> long_break_timer_callback)
     : color_id(configuration.getColorId()) {
-  // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-  assert(std::filesystem::exists(pomodoro::files::sounds::start_break));
-  // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-  assert(std::filesystem::exists(pomodoro::files::sounds::start_work));
-  start_break_sound.openFromFile(pomodoro::files::sounds::start_break.string());
-  start_work_sound.openFromFile(pomodoro::files::sounds::start_work.string());
-
   timers.emplaceTimer(pomodoro::strings::work_timer,
-                      configuration.getWorkTime(), [this]() {
-                        start_break_sound.stop();
-                        start_break_sound.play();
-                        fmt::print("\n");
+                      configuration.getWorkTime(),
+                      [this, callback = std::move(work_timer_callback)]() {
+                        callback();
                         timers.getTimer(1).start();
                       });
   timers.emplaceTimer(pomodoro::strings::break_timer,
-                      configuration.getBreakTime(), [this]() {
-                        start_break_sound.stop();
-                        start_break_sound.play();
-                        fmt::print("\n");
+                      configuration.getBreakTime(),
+                      [this, callback = std::move(break_timer_callback)]() {
+                        callback();
                         timers.getTimer(2).start();
                       });
   timers.emplaceTimer(pomodoro::strings::work_timer,
-                      configuration.getWorkTime(), [this]() {
-                        start_break_sound.stop();
-                        start_break_sound.play();
-                        fmt::print("\n");
+                      configuration.getWorkTime(),
+                      [this, callback = std::move(work_timer_callback)]() {
+                        callback();
                         timers.getTimer(3).start();
                       });
   timers.emplaceTimer(pomodoro::strings::break_timer,
-                      configuration.getBreakTime(), [this]() {
-                        start_break_sound.stop();
-                        start_break_sound.play();
-                        fmt::print("\n");
+                      configuration.getBreakTime(),
+                      [this, callback = std::move(break_timer_callback)]() {
+                        callback();
                         timers.getTimer(4).start();
                       });
   timers.emplaceTimer(pomodoro::strings::work_timer,
-                      configuration.getWorkTime(), [this]() {
-                        start_break_sound.stop();
-                        start_break_sound.play();
-                        fmt::print("\n");
+                      configuration.getWorkTime(),
+                      [this, callback = std::move(work_timer_callback)]() {
+                        callback();
                         timers.getTimer(5).start();
                       });
   timers.emplaceTimer(pomodoro::strings::break_timer,
-                      configuration.getBreakTime(), [this]() {
-                        start_break_sound.stop();
-                        start_break_sound.play();
-                        fmt::print("\n");
+                      configuration.getBreakTime(),
+                      [this, callback = std::move(break_timer_callback)]() {
+                        callback();
                         timers.getTimer(6).start();
                       });
   timers.emplaceTimer(pomodoro::strings::work_timer,
-                      configuration.getWorkTime(), [this]() {
-                        start_break_sound.stop();
-                        start_break_sound.play();
-                        fmt::print("\n");
+                      configuration.getWorkTime(),
+                      [this, callback = std::move(work_timer_callback)]() {
+                        callback();
                         timers.getTimer(7).start();
                       });
-  timers.emplaceTimer(pomodoro::strings::break_timer,
-                      configuration.getLongBreakTime(), [this]() {
-                        start_break_sound.stop();
-                        start_break_sound.play();
-                        fmt::print("\n");
-                        timers.getTimer(0).start();
-                      });
+  timers.emplaceTimer(
+      pomodoro::strings::break_timer, configuration.getLongBreakTime(),
+      [this, callback = std::move(long_break_timer_callback)]() {
+        callback();
+        timers.getTimer(0).start();
+      });
 }
 
 Pomodoro::~Pomodoro() = default;

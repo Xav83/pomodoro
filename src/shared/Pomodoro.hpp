@@ -2,7 +2,6 @@
 
 #include "Timers.hpp"
 #include "color/Dictionary.hpp"
-#include <SFML/Audio.hpp>
 #include <utility>
 
 namespace pomodoro {
@@ -11,7 +10,10 @@ class Configuration;
 
 class Pomodoro {
 public:
-  explicit Pomodoro(const pomodoro::Configuration &configuration);
+  explicit Pomodoro(const pomodoro::Configuration &configuration,
+                    std::function<void()> work_timer_callback,
+                    std::function<void()> break_timer_callback,
+                    std::function<void()> long_break_timer_callback);
   ~Pomodoro();
 
   void run();
@@ -22,6 +24,5 @@ public:
 
 private:
   pomodoro::Timers timers;
-  sf::Music start_break_sound, start_work_sound;
   pomodoro::color::Id color_id;
 };

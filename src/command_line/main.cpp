@@ -4,6 +4,7 @@
 #include "shared/color/Dictionary.hpp"
 #include "shared/utility/FilesDictionary.hpp"
 #include "shared/utility/StringsDictionary.hpp"
+#include <SFML/Audio.hpp>
 #include <thread>
 #include <utility>
 
@@ -37,7 +38,36 @@ int main(int, char *argv[]) {
     configurationFile.save(configuration);
   }
 
-  Pomodoro pomodoro(configuration);
+  sf::Music start_break_sound, start_work_sound;
+
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+  assert(std::filesystem::exists(pomodoro::files::sounds::start_break));
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+  assert(std::filesystem::exists(pomodoro::files::sounds::start_work));
+  const auto hasOpenBreakSoundSuccessfully = start_break_sound.openFromFile(
+      pomodoro::files::sounds::start_break.string());
+  assert(hasOpenBreakSoundSuccessfully);
+  const auto hasOpenWorkSoundSuccessfully = start_work_sound.openFromFile(
+      pomodoro::files::sounds::start_work.string());
+  assert(hasOpenWorkSoundSuccessfully);
+
+  Pomodoro pomodoro(
+      configuration,
+      [&start_break_sound, &start_work_sound]() {
+        start_work_sound.stop();
+        start_break_sound.play();
+        fmt::print("\n");
+      },
+      [&start_break_sound, &start_work_sound]() {
+        start_break_sound.stop();
+        start_work_sound.play();
+        fmt::print("\n");
+      },
+      [&start_break_sound, &start_work_sound]() {
+        start_break_sound.stop();
+        start_work_sound.play();
+        fmt::print("\n");
+      });
   pomodoro.run();
 
   while (pomodoro.isRunning()) {
