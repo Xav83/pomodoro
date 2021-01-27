@@ -10,3 +10,5 @@ cmake_multi
 
 [options]
 sfml:audio=True
+sfml:graphics=True
+sfml:window=True

@@ -13,13 +13,14 @@ find_program(
 
 if(APPLE)
   set(POMODORO_PROFILE ${PROJECT_SOURCE_DIR}/.conan/profiles/apple)
-  set(POMODORO_SOUND_INSTALL_FOLDER "~/Library/Application Support/Pomodoro")
+  set(POMODORO_RESOURCES_INSTALL_FOLDER
+      "~/Library/Application Support/Pomodoro")
 elseif(UNIX)
   set(POMODORO_PROFILE ${PROJECT_SOURCE_DIR}/.conan/profiles/linux)
-  set(POMODORO_SOUND_INSTALL_FOLDER "~/.pomodoro")
+  set(POMODORO_RESOURCES_INSTALL_FOLDER "~/.pomodoro")
 else()
   set(POMODORO_PROFILE ${PROJECT_SOURCE_DIR}/.conan/profiles/windows)
-  set(POMODORO_SOUND_INSTALL_FOLDER "C:/ProgramData/pomodoro")
+  set(POMODORO_RESOURCES_INSTALL_FOLDER "C:/ProgramData/pomodoro")
 endif()
 
 execute_process(
@@ -73,18 +74,18 @@ target_compile_options(
 target_link_libraries(pomodoro PUBLIC pomodoro_lib CONAN_PKG::argh)
 target_include_directories(pomodoro PUBLIC src)
 
-make_directory("${POMODORO_SOUND_INSTALL_FOLDER}")
+make_directory("${POMODORO_RESOURCES_INSTALL_FOLDER}")
 
 add_custom_command(
   TARGET pomodoro
   POST_BUILD
-  COMMAND cp *.ogg ${POMODORO_SOUND_INSTALL_FOLDER}
+  COMMAND cp *.ogg ${POMODORO_RESOURCES_INSTALL_FOLDER}
   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/res/
   COMMENT "Moves the sound files into the right folder")
 
 # Pomodoro desktop application
 
-add_executable(pomodoro_desktop src/desktop/main.cpp)
+add_executable(pomodoro_desktop src/desktop/main.cpp src/desktop/Fonts.cpp)
 set_property(TARGET pomodoro_desktop PROPERTY CXX_STANDARD 17)
 target_compile_options(
   pomodoro_desktop
@@ -92,6 +93,15 @@ target_compile_options(
           $<$<CXX_COMPILER_ID:MSVC>: /permissive->)
 target_link_libraries(pomodoro_desktop PUBLIC pomodoro_lib)
 target_include_directories(pomodoro_desktop PUBLIC src)
+
+make_directory("${POMODORO_RESOURCES_INSTALL_FOLDER}/Fonts")
+
+add_custom_command(
+  TARGET pomodoro_desktop
+  POST_BUILD
+  COMMAND cp -rf Fonts ${POMODORO_RESOURCES_INSTALL_FOLDER}
+  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/res/
+  COMMENT "Moves the sound files into the right folder")
 
 # Pomodoro tests
 
