@@ -5,6 +5,7 @@
 #include "shared/utility/FilesDictionary.hpp"
 #include "shared/utility/StringsDictionary.hpp"
 #include <SFML/Audio.hpp>
+#include <fmt/chrono.h>
 #include <thread>
 #include <utility>
 
@@ -70,8 +71,26 @@ int main(int, char *argv[]) {
       });
   pomodoro.run();
 
+  const auto color_id = configuration.getColorId();
+
   while (pomodoro.isRunning()) {
-    fmt::print("\r{}", pomodoro.getCurrentState());
+    const auto &timer = pomodoro.getCurrentTimer();
+
+    const auto name = [&timer, &color_id]() {
+      if (color_id != pomodoro::color::Id::no_color) {
+        auto color_set =
+            pomodoro::color::dictionary.at(static_cast<size_t>(color_id));
+        if (timer.getName() == pomodoro::strings::work_timer) {
+          return fmt::format(fg(color_set.work_color), timer.getName().data());
+        }
+        return fmt::format(fg(color_set.break_color), timer.getName().data());
+      }
+      return fmt::format(timer.getName().data());
+    }();
+
+    fmt::print(pomodoro::strings::current_timer, name,
+               timer.getRemainingTime());
+
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
   }
   return EXIT_SUCCESS;

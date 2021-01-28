@@ -20,9 +20,8 @@ public:
 
   bool isRunning() const;
 
-  std::string getCurrentState() const;
+  const pomodoro::Timer &getCurrentTimer() const;
 
 private:
   pomodoro::Timers timers;
-  pomodoro::color::Id color_id;
 };

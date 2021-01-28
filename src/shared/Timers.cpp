@@ -20,6 +20,12 @@ Timer &Timers::getTimer(size_t index) {
   return timers[index];
 }
 
+const Timer &Timers::getTimer(size_t index) const {
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+  assert(index < timers.size());
+  return timers[index];
+}
+
 std::vector<pomodoro::Timer>::const_iterator Timers::cbegin() const {
   return std::cbegin(timers);
 }
