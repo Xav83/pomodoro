@@ -45,11 +45,15 @@ int main(int, char *argv[]) {
   assert(std::filesystem::exists(pomodoro::files::sounds::start_break));
   // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
   assert(std::filesystem::exists(pomodoro::files::sounds::start_work));
-  const auto hasOpenBreakSoundSuccessfully = start_break_sound.openFromFile(
-      pomodoro::files::sounds::start_break.string());
+  [[maybe_unused]] const auto hasOpenBreakSoundSuccessfully =
+      start_break_sound.openFromFile(
+          pomodoro::files::sounds::start_break.string());
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
   assert(hasOpenBreakSoundSuccessfully);
-  const auto hasOpenWorkSoundSuccessfully = start_work_sound.openFromFile(
-      pomodoro::files::sounds::start_work.string());
+  [[maybe_unused]] const auto hasOpenWorkSoundSuccessfully =
+      start_work_sound.openFromFile(
+          pomodoro::files::sounds::start_work.string());
+  // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
   assert(hasOpenWorkSoundSuccessfully);
 
   Pomodoro pomodoro(
