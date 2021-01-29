@@ -15,6 +15,7 @@ public:
       std::function<void()> callback = []() {});
 
   Timer &getTimer(size_t index);
+  const Timer &getTimer(size_t index) const;
 
   std::vector<pomodoro::Timer>::const_iterator cbegin() const;
   std::vector<pomodoro::Timer>::const_iterator cend() const;

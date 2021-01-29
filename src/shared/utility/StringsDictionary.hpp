@@ -46,7 +46,7 @@ constexpr std::string_view work_timer = "Work";
 constexpr std::string_view break_timer = "Break";
 
 constexpr std::string_view current_timer =
-    "Timer {} - Time remaining: {:%M:%S}";
+    "\rTimer {} - Time remaining: {:%M:%S}";
 constexpr std::string_view no_current_timer =
     "The Pomodoro has not been started.";
 } // namespace pomodoro::strings

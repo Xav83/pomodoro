@@ -1,6 +1,6 @@
 [requires]
 fmt/7.1.2
-sfml/2.5.0@bincrafters/stable
+sfml/2.5.1@bincrafters/stable
 argh/1.2.1@adishavit/stable
 nlohmann_json/3.9.1
 gtest/1.10.0
@@ -10,3 +10,5 @@ cmake_multi
 
 [options]
 sfml:audio=True
+sfml:graphics=True
+sfml:window=True
